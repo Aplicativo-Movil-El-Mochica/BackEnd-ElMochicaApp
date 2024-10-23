@@ -1,2 +1,2 @@
 # BackEnd-ElMochicaApp
-BacEnd de la aplicación El Mochica App
+BackEnd de la aplicación El Mochica App
