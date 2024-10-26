@@ -17,17 +17,17 @@ public class Product {
 
     private double price;
 
-    private int disponibility;
+    private int disposition;
 
     private Categori categori;
 
 
     public void actualizarStock(int cantidad) {
-        this.disponibility += cantidad;
+        this.disposition += cantidad;
     }
 
     public int obtenerDisponibilidad() {
-        return this.disponibility;
+        return this.disposition;
     }
 
     public void agregarCategoria(Categori categori) {

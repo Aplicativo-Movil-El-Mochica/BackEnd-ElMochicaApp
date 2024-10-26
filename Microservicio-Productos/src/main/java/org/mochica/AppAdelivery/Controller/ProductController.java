@@ -1,9 +1,13 @@
 package org.mochica.AppAdelivery.Controller;
 
+import org.mochica.AppAdelivery.DTO.ProductCategoryDTO;
+import org.mochica.AppAdelivery.DTO.ProductDispositionDTO;
+import org.mochica.AppAdelivery.DTO.ProductStockDTO;
 import org.mochica.AppAdelivery.Entity.Product;
 import org.mochica.AppAdelivery.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.mochica.AppAdelivery.DTO.ProductNameDTO;
 
 import java.util.concurrent.ExecutionException;
 
@@ -31,6 +35,24 @@ public class ProductController {
 
     @PutMapping("/updateStock/{id}/{cantidad}")
     public void updateStock(@PathVariable Long id, @PathVariable int cantidad) throws InterruptedException, ExecutionException {
-        productService.updateStock(id, cantidad);
+        ProductStockDTO productStockDTO = new ProductStockDTO();
+        productStockDTO.setProductId(id);
+        productStockDTO.setCantidad(cantidad);
+        productService.updateStock(productStockDTO);
+    }
+
+    @PostMapping("/findByName")
+    public Product findProductByName(@RequestBody ProductNameDTO productNameDTO) throws InterruptedException, ExecutionException {
+    return productService.findProductByName(productNameDTO);
+    }
+
+    @PostMapping("/getDisponibility")
+    public int getDisponibility(@RequestBody ProductDispositionDTO productDisponibilityDTO) throws InterruptedException, ExecutionException {
+        return productService.getDisponibility(productDisponibilityDTO);
+    }
+
+    @PostMapping("/addCategory")
+    public void addCategory(@RequestBody ProductCategoryDTO productCategoryDTO) throws InterruptedException, ExecutionException {
+        productService.addCategory(productCategoryDTO);
     }
 }
