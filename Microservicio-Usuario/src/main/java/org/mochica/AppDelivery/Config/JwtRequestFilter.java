@@ -26,50 +26,47 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private JwtTokenUtil jwtTokenUtil;  // Utilidad para manejar JWT
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        final String tokenFromRequest = request.getHeader("Authorization");
 
-        final String requestTokenHeader = request.getHeader("Authorization");
-
-        String email = null;
-        String jwtToken = null;
-
-        // El token JWT está en la forma "Bearer token". Quitar "Bearer" y obtener el token
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-
+        String userName=null;
+        String encryptedJwtToken=null;
+        String jwtToken=null;
+        logger.debug("Inside JwtRequestFilter--OncePerRequestFilter");
+        // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
+        if (tokenFromRequest != null && tokenFromRequest.startsWith("Bearer ")) {
+            encryptedJwtToken = tokenFromRequest.substring(7); // remove bearer part
+            jwtToken = EncryptionUtil.decrypt(encryptedJwtToken);
             try {
-                // Decodificar el JWT token en Base64
-                String decodedJwtToken = new String(Base64.getDecoder().decode(jwtToken));
-
-                // Obtener el email (subject) del token
-                email = jwtTokenUtil.getEmailFromToken(decodedJwtToken);
+                userName = jwtTokenUtil.getUserNameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("No se pudo obtener el JWT Token");
+                logger.error("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
-                System.out.println("El JWT Token ha expirado");
+                logger.error("JWT Token has expired");
             }
         } else {
-            logger.warn("El JWT Token no comienza con Bearer String");
+            logger.warn("JWT Token does not begin with Bearer String");
         }
 
-        // Validar el token
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        //  Once we get the token validate it and extract username(principal/subject) from it.
+        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            // Cargar detalles del usuario desde tu servicio
-            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(email);
+            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(userName);
 
-            // Validar el token decodificado
-            String decodedJwtToken = new String(Base64.getDecoder().decode(jwtToken)); // Decodificar antes de validar
-            if (jwtTokenUtil.validateToken(decodedJwtToken, email)) {
+            // if token is valid configure Spring Security to manually set
+            // authentication
+            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 
-                // Crear la autenticación y agregarla al contexto de seguridad
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                usernamePasswordAuthenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                // After setting the Authentication in the context, we specify
+                // that the current user is authenticated. So it passes the
+                // Spring Security Configurations successfully.
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 }

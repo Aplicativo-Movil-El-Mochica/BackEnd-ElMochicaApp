@@ -16,6 +16,7 @@ import java.util.Base64;
 
 public class EncryptionUtil {
     private static final Logger logger = LoggerFactory.getLogger(EncryptionUtil.class);
+
     @Value("${cipher.secret}")
     private static final String SECRET_KEY="hsl43=m/mdYo87%fesSYm2";
     @Value("${cipher.salt}")

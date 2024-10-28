@@ -5,12 +5,15 @@ import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
+import org.mochica.AppDelivery.Config.EncryptionUtil;
 import org.mochica.AppDelivery.Config.JwtTokenUtil;
 import org.mochica.AppDelivery.DTO.LoginDTO;
 import org.mochica.AppDelivery.DTO.RegisterDTO;
 import org.mochica.AppDelivery.Firebase.FBInitialize;
 import org.mochica.AppDelivery.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,9 @@ public class UsuarioServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Override
     public List<RegisterDTO> list() {
@@ -96,6 +102,7 @@ public class UsuarioServiceImpl implements UserService {
     @Override
     public String login(LoginDTO loginDTO) {
         try {
+            // Obtener la referencia de la colección "users" en Firestore
             CollectionReference usersCollection = fbInitialize.getFirestore().collection("users");
 
             // Buscar el usuario por email
@@ -106,14 +113,18 @@ public class UsuarioServiceImpl implements UserService {
             List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 
             if (!documents.isEmpty()) {
+                // Extraer el primer documento encontrado
                 QueryDocumentSnapshot document = documents.get(0);
                 String storedPassword = document.getString("password");
 
-                // Comparar contraseñas usando bcrypt para mayor seguridad
+                // Comparar contraseñas usando BCrypt para mayor seguridad
                 if (passwordEncoder.matches(loginDTO.getPassword(), storedPassword)) {
-                    // Generar el JWT usando el email como subject
-                    String jwt = jwtTokenUtil.generateToken(loginDTO.getEmail());
-                    return jwt;  // Devolver el token al cliente
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getEmail());
+
+                    // Generar el JWT usando los detalles del usuario
+                    String jwt = jwtTokenUtil.generateToken(userDetails);
+                    String jwtencript = EncryptionUtil.encrypt(jwt);
+                    return jwtencript; // Devolver el token al cliente
                 } else {
                     return "Contraseña incorrecta";
                 }
@@ -137,4 +148,30 @@ public class UsuarioServiceImpl implements UserService {
     public Boolean delete(Long id, RegisterDTO registerDTO) {
         return null;
     }
+
+    @Override
+    public String searchdni(Long dni) {
+        try {
+            CollectionReference usersCollection = fbInitialize.getFirestore().collection("users");
+
+            // Buscar el usuario por DNI
+            ApiFuture<QuerySnapshot> future = usersCollection.whereEqualTo("dni", dni).get();
+            QuerySnapshot querySnapshot = future.get();
+
+            // Obtener el resultado
+            List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+            if (!documents.isEmpty()) {
+                QueryDocumentSnapshot document = documents.get(0);
+                String name = document.getString("name");
+                return "{\"status\":\"true\",\"data\":\"" + name + "\"}";
+            } else {
+                // Caso en que no se encontró un usuario con el DNI
+                return "{\"status\":\"false\",\"data\":\"Usuario no encontrado\"}";
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            // En caso de que haya un error de ejecución o interrupción
+            return "{\"status\":\"false\",\"data\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
 }

@@ -13,7 +13,7 @@ public interface UserService {
     String login(LoginDTO loginDTO);
     Boolean update(Long id, RegisterDTO registerDTO);
     Boolean delete(Long id, RegisterDTO registerDTO);
-
+    String searchdni(Long dni);
 
 
 }
