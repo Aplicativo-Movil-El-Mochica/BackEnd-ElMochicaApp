@@ -8,6 +8,7 @@ import org.mochica.AppAdelivery.DTO.ProductCategoryDTO;
 import org.mochica.AppAdelivery.DTO.ProductDispositionDTO;
 import org.mochica.AppAdelivery.DTO.ProductNameDTO;
 import org.mochica.AppAdelivery.DTO.ProductStockDTO;
+import org.mochica.AppAdelivery.Entity.Categori;
 import org.mochica.AppAdelivery.Entity.Product;
 import org.mochica.AppAdelivery.Firebase.FBInitialize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -57,8 +59,8 @@ public class ProductService {
         }
     }
 
-    public int getDisponibility(ProductDispositionDTO productDisponibilityDTO) throws InterruptedException, ExecutionException {
-        Product product = getProduct(productDisponibilityDTO.getProductId());
+    public int getDisposition(ProductDispositionDTO productDispositionDTO) throws InterruptedException, ExecutionException {
+        Product product = getProduct(productDispositionDTO.getProductId());
         if (product != null) {
             return product.obtenerDisponibilidad();
         }
@@ -83,5 +85,14 @@ public class ProductService {
             }
         }
         return null;
+    }
+
+    public List<Product> findProductsByCategory(Categori category) throws InterruptedException, ExecutionException {
+        Firestore dbFirestore = getFirestore();
+        ApiFuture<QuerySnapshot> future = dbFirestore.collection("products").get();
+        List<Product> products = future.get().toObjects(Product.class);
+        return products.stream()
+                .filter(product -> product.getCategori() == category)
+                .collect(Collectors.toList());
     }
 }
