@@ -1,16 +1,13 @@
 package org.mochica.AppAdelivery.Controller;
 
-import org.mochica.AppAdelivery.DTO.ProductCategoryDTO;
-import org.mochica.AppAdelivery.DTO.ProductDispositionDTO;
-import org.mochica.AppAdelivery.DTO.ProductStockDTO;
+import org.mochica.AppAdelivery.DTO.*;
 import org.mochica.AppAdelivery.Entity.Categori;
 import org.mochica.AppAdelivery.Entity.Product;
-import org.mochica.AppAdelivery.Service.ProductService;
+import org.mochica.AppAdelivery.Service.Impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.mochica.AppAdelivery.DTO.ProductNameDTO;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -20,17 +17,21 @@ import java.util.concurrent.ExecutionException;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addProduct(@RequestBody Product product) throws InterruptedException, ExecutionException {
-        String productId = productService.saveProduct(product);
-        return new ResponseEntity<>(productId, HttpStatus.CREATED);
+    public ResponseEntity<?> addProduct(@RequestBody SaveProductDTO saveProductDTO) throws InterruptedException, ExecutionException {
+        Boolean success = productService.saveProduct(saveProductDTO);
+        if (success) {
+            return new ResponseEntity<>("Dish added successfully", HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) throws InterruptedException, ExecutionException {
-        Product product = productService.getProduct(id);
+    @GetMapping("/getProduct")
+    public ResponseEntity<?> getProduct(@RequestParam String productName) throws InterruptedException, ExecutionException {
+        List<Product> product = productService.getProduct(productName);
         if (product != null) {
             return new ResponseEntity<>(product, HttpStatus.OK);
         } else {
@@ -39,18 +40,39 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id) throws InterruptedException, ExecutionException {
+    public ResponseEntity<String> deleteProduct(@PathVariable String id) throws InterruptedException, ExecutionException {
         String response = productService.deleteProduct(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/updateStock/{id}/{cantidad}")
-    public ResponseEntity<Void> updateStock(@PathVariable Long id, @PathVariable int cantidad) throws InterruptedException, ExecutionException {
-        ProductStockDTO productStockDTO = new ProductStockDTO();
-        productStockDTO.setProductId(id);
-        productStockDTO.setCantidad(cantidad);
-        productService.updateStock(productStockDTO);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PostMapping("/getDisposition")
+    public ResponseEntity<Integer> getDisposition(@RequestBody ProductNameDTO productNameDTO) throws InterruptedException, ExecutionException {
+        int disposition = productService.getDisposition(productNameDTO.getProductName());
+        return new ResponseEntity<>(disposition, HttpStatus.OK);
+    }
+
+    @PutMapping("/updateCategory")
+    public ResponseEntity<?> updateCategory(@RequestBody ProductCategoryDTO productCategoryDTO) {
+        try {
+            Boolean success = productService.updateCategory(productCategoryDTO);
+            if (success) {
+                return new ResponseEntity<>("Category updated successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/updateStock")
+    public ResponseEntity<?> updateStock(@RequestBody ProductStockDTO productStockDTO) throws InterruptedException, ExecutionException {
+        Boolean success = productService.updateStock(productStockDTO);
+        if (success) {
+            return new ResponseEntity<>("Stock updated successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/findByName")
@@ -63,17 +85,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/getDisposition")
-    public ResponseEntity<Integer> getDisposition(@RequestBody ProductDispositionDTO productDispositionDTO) throws InterruptedException, ExecutionException {
-        int disposition = productService.getDisposition(productDispositionDTO);
-        return new ResponseEntity<>(disposition, HttpStatus.OK);
-    }
 
-    @PostMapping("/addCategory")
-    public ResponseEntity<Void> addCategory(@RequestBody ProductCategoryDTO productCategoryDTO) throws InterruptedException, ExecutionException {
-        productService.addCategory(productCategoryDTO);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 
     @GetMapping("/filterByCategory/{category}")
     public ResponseEntity<List<Product>> filterByCategory(@PathVariable Categori category) throws InterruptedException, ExecutionException {
