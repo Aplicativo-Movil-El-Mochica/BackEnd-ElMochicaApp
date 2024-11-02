@@ -1,3 +1,4 @@
 # Ignorar archivos temporales de compilación
-Microservicio-Productos/build/
 Microservicio-Usuario/build/
+Microservicio-Productos/build/
+.gradle/
