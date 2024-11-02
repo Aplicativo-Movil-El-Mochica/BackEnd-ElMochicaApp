@@ -25,22 +25,14 @@ public class Product {
     private int availability;
 
     @PropertyName("Category")
-    private Categori category;
+    private String category;
 
 
-    public void actualizarStock(int cantidad) {
-        this.availability += cantidad;
-    }
+
+
 
     public int obtenerDisponibilidad() {
         return this.availability;
     }
 
-    public void agregarCategoria(Categori categori) {
-        this.category = categori;
-    }
-
-    public boolean buscarProductoPorNombre(String name) {
-        return this.productName.equalsIgnoreCase(name);
-    }
 }

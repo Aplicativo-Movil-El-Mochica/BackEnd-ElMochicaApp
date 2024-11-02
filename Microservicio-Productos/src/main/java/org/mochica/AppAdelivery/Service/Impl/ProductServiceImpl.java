@@ -149,16 +149,20 @@ public class ProductServiceImpl implements ProductService {
 
     public List<Product> findProductsByCategory(Categori category) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = getFirestore();
+
+        // Usa el formato de la categoría con espacios para coincidir con Firestore
+        String formattedCategoryName = category.name().replace("_", " ");
+
         ApiFuture<QuerySnapshot> future = dbFirestore.collection(collectionproduct)
-                .whereEqualTo("Category", category.getFormattedName()) // Usamos el nombre formateado de la categoría
+                .whereEqualTo("Category", formattedCategoryName) // Realiza la consulta con el formato correcto
                 .get();
 
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         List<Product> products = new ArrayList<>();
 
         for (QueryDocumentSnapshot document : documents) {
-            Product product = document.toObject(Product.class);
-            product.setId(document.getId()); // Asigna el ID del documento Firestore al campo id de Product
+            Product product = document.toObject(Product.class); // No se necesita conversión adicional en la categoría
+            product.setId(document.getId()); // Asigna el ID de Firestore al campo id de Product
             products.add(product);
         }
 

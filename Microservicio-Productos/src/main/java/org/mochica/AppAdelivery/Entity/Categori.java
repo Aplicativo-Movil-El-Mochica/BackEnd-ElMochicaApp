@@ -17,14 +17,12 @@ public enum Categori {
     POSTRES;
 
 
-    public String getFormattedName() {
-        // Reemplaza los guiones bajos por espacios y capitaliza cada palabra
-        String name = this.name().replace("_", " ").toLowerCase();
-        String[] words = name.split(" ");
-        StringBuilder formattedName = new StringBuilder();
-        for (String word : words) {
-            formattedName.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+    public static Categori fromFirestoreValue(String firestoreValue) {
+        String formattedValue = firestoreValue.replace(" ", "_").toUpperCase();
+        try {
+            return Categori.valueOf(formattedValue);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Valor de categoría no válido en Firestore: " + firestoreValue);
         }
-        return formattedName.toString().trim(); // Elimina el espacio extra al final
     }
 }
