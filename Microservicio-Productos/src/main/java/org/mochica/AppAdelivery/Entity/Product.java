@@ -1,5 +1,6 @@
 package org.mochica.AppAdelivery.Entity;
 
+import com.google.cloud.firestore.annotation.PropertyName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,29 +10,34 @@ import lombok.NoArgsConstructor;
 @Data
 public class Product {
 
-    private Long id;
+    private String id;
 
+    @PropertyName("ProductName")
     private String productName;
 
+    @PropertyName("Description")
     private String description;
 
-    private double price;
+    @PropertyName("Price")
+    private Long price;
 
-    private int disponibility;
+    @PropertyName("Availability")
+    private int availability;
 
-    private Categori categori;
+    @PropertyName("Category")
+    private Categori category;
 
 
     public void actualizarStock(int cantidad) {
-        this.disponibility += cantidad;
+        this.availability += cantidad;
     }
 
     public int obtenerDisponibilidad() {
-        return this.disponibility;
+        return this.availability;
     }
 
     public void agregarCategoria(Categori categori) {
-        this.categori = categori;
+        this.category = categori;
     }
 
     public boolean buscarProductoPorNombre(String name) {
