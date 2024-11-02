@@ -25,11 +25,11 @@ public class UserController {
     @PostMapping(value = "/register")
     public ResponseEntity<?> add(@RequestBody RegisterDTO registerDTO){
         try {
-            Boolean isRegistered = userService.add(registerDTO);
-            if (isRegistered) {
+            String isRegistered = userService.add(registerDTO);
+            if (isRegistered.equals("Usuario registrado exitosamente.")) {
                 return ResponseEntity.ok("Usuario registrado exitosamente.");
             } else {
-                return ResponseEntity.status(409).body("El email, DNI o teléfono ya están registrados.");
+                return ResponseEntity.status(409).body(isRegistered);
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error en el registro: " + e.getMessage());

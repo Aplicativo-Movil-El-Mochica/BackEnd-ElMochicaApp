@@ -42,7 +42,7 @@ public class UsuarioServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean add(RegisterDTO registerDTO) {
+    public String add(RegisterDTO registerDTO) {
         try {
             CollectionReference usersCollection = fbInitialize.getFirestore().collection("users");
 
@@ -52,7 +52,7 @@ public class UsuarioServiceImpl implements UserService {
 
             if (!emailDocuments.isEmpty()) {
                 System.out.println("El email ya está registrado.");
-                return false;  // Email ya registrado
+                return "El email ya está registrado";  // Email ya registrado
             }
 
             // Verificar si el DNI ya está registrado
@@ -61,7 +61,7 @@ public class UsuarioServiceImpl implements UserService {
 
             if (!dniDocuments.isEmpty()) {
                 System.out.println("El DNI ya está registrado.");
-                return false;  // DNI ya registrado
+                return "El DNI ya está registrado";  // DNI ya registrado
             }
 
             // Verificar si el número de teléfono ya está registrado
@@ -70,7 +70,7 @@ public class UsuarioServiceImpl implements UserService {
 
             if (!phoneDocuments.isEmpty()) {
                 System.out.println("El teléfono ya está registrado.");
-                return false;  // Teléfono ya registrado
+                return "El teléfono ya está registrado";  // Teléfono ya registrado
             }
 
             // Si las verificaciones pasan, se procede a registrar el nuevo usuario
@@ -88,14 +88,14 @@ public class UsuarioServiceImpl implements UserService {
             ApiFuture<WriteResult> writeResultApiFuture = usersCollection.document().create(docData);
 
             if (writeResultApiFuture.get() != null) {
-                return Boolean.TRUE;  // Registro exitoso
+                return "Usuario registrado exitosamente.";  // Registro exitoso
             }
 
-            return Boolean.FALSE;  // Error al guardar en Firestore
+            return "Error en el registro";  // Error al guardar en Firestore
 
         } catch (ExecutionException | InterruptedException e) {
             System.out.println(e.getMessage());
-            return Boolean.FALSE;  // Error en la operación de registro
+            return "Error en el registro";  // Error en la operación de registro
         }
     }
 
