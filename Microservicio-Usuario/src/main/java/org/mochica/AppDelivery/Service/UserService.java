@@ -9,11 +9,11 @@ public interface UserService {
 
     List<RegisterDTO> list();
 
-    Boolean add(RegisterDTO registerDTO);
+    String add(RegisterDTO registerDTO);
     String login(LoginDTO loginDTO);
     Boolean update(Long id, RegisterDTO registerDTO);
     Boolean delete(Long id, RegisterDTO registerDTO);
-
+    String searchdni(Long dni);
 
 
 }

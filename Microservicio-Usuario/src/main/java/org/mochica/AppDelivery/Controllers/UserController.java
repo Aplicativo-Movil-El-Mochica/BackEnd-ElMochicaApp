@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
 
 @RestController
@@ -28,11 +25,11 @@ public class UserController {
     @PostMapping(value = "/register")
     public ResponseEntity<?> add(@RequestBody RegisterDTO registerDTO){
         try {
-            Boolean isRegistered = userService.add(registerDTO);
-            if (isRegistered) {
+            String isRegistered = userService.add(registerDTO);
+            if (isRegistered.equals("Usuario registrado exitosamente.")) {
                 return ResponseEntity.ok("Usuario registrado exitosamente.");
             } else {
-                return ResponseEntity.status(409).body("El email, DNI o teléfono ya están registrados.");
+                return ResponseEntity.status(409).body(isRegistered);
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error en el registro: " + e.getMessage());
@@ -57,6 +54,16 @@ public class UserController {
             return ResponseEntity.status(401).body("Error en la autenticación: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/search/{dni}")
+    public ResponseEntity<?> searchdni(@PathVariable Long dni){
+        try {
+            String value = userService.searchdni(dni);
+            return ResponseEntity.ok(value);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error en la consulta: " + e.getMessage());
         }
     }
 }
