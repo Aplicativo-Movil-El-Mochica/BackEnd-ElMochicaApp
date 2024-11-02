@@ -7,5 +7,6 @@
 /dataSources/
 /dataSources.local.xml
 # Ignorar archivos temporales de compilación
+Microservicio-Productos/build/
 Microservicio-Usuario/build/
 .gradle/
