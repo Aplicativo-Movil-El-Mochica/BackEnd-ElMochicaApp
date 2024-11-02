@@ -150,7 +150,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findProductsByCategory(Categori category) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = getFirestore();
         ApiFuture<QuerySnapshot> future = dbFirestore.collection(collectionproduct)
-                .whereEqualTo("Category", category.name()) // Filtramos directamente por categoría
+                .whereEqualTo("Category", category.getFormattedName()) // Usamos el nombre formateado de la categoría
                 .get();
 
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
