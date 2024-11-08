@@ -1,18 +1,14 @@
 package com.mochica.AppDelivery.Service.Impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.mochica.AppDelivery.DTO.AddProductDTO;
 import com.mochica.AppDelivery.DTO.DispositionDTO;
+import com.mochica.AppDelivery.DTO.ModificarCarritoDTO;
 import com.mochica.AppDelivery.DTO.StockUpdateDTO;
+import com.mochica.AppDelivery.Entity.OrderDetail;
 import com.mochica.AppDelivery.Firebase.FBInitialize;
-import com.mochica.AppDelivery.Service.OrderDetail;
+import com.mochica.AppDelivery.Service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,12 +18,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class OrderDetailServiceImpl implements OrderDetail {
+public class OrderDetailServiceServiceImpl implements OrderDetailService {
 
     @Autowired
     private FBInitialize fbInitialize;
@@ -41,6 +39,7 @@ public class OrderDetailServiceImpl implements OrderDetail {
     private String userServiceUrl;
 
     private String collection = "orderdetails";
+    private String dishescollection = "dishes";
 
     @Override
     public String addProduct(AddProductDTO addProductDTO) throws ExecutionException, InterruptedException {
@@ -148,6 +147,112 @@ public class OrderDetailServiceImpl implements OrderDetail {
         }
 
         return subtotal;
+    }
+
+    @Override
+    public List<OrderDetail> obtenerCarrito(String userId) throws ExecutionException, InterruptedException {
+        CollectionReference dishesCollection = fbInitialize.getFirestore().collection(collection);
+
+        ApiFuture<QuerySnapshot> productNameFuture = dishesCollection.whereEqualTo("UserId", userId).get();
+        List<QueryDocumentSnapshot> productNameDocuments = productNameFuture.get().getDocuments();
+
+        // Crear la lista donde se almacenarán los detalles de los pedidos
+        List<OrderDetail> orderDetailServices = new ArrayList<>();
+
+        // Iterar sobre los documentos obtenidos y agregarlos a la lista
+        for (QueryDocumentSnapshot document : productNameDocuments) {
+            // Convertir el documento en un objeto OrderDetail
+            OrderDetail orderDetail = document.toObject(OrderDetail.class);
+
+            // Establecer el ID del documento en el objeto OrderDetail (si es necesario)
+            orderDetail.setId(document.getId());
+
+            // Agregar el objeto OrderDetail a la lista
+            orderDetailServices.add(orderDetail);
+        }
+
+        // En este punto, orderDetailServices contiene todos los documentos que cumplen la condición
+        return orderDetailServices;
+    }
+
+    @Override
+    public Boolean modificarCarrito(ModificarCarritoDTO modificarCarritoDTO) {
+        try {
+            // Obtener la referencia de la colección "products"
+            CollectionReference dishesCollection = fbInitialize.getFirestore().collection(collection);
+            CollectionReference collectiondish = fbInitialize.getFirestore().collection(dishescollection);
+            String productId = modificarCarritoDTO.getCartProductId();
+
+            // Consultar el documento específico por productId en el carrito
+            DocumentSnapshot document = dishesCollection.document(productId).get().get();
+
+            if (document.exists()) {
+                // Obtener los valores actuales en el carrito
+                int currentAmount = document.getLong("Amount").intValue();
+                int currentPrice = document.getLong("Price").intValue();
+                String productName = document.getString("ProductName");
+
+                // Consultar el producto por nombre en la colección de productos
+                ApiFuture<QuerySnapshot> query = collectiondish.whereEqualTo("ProductName", productName).get();
+                List<QueryDocumentSnapshot> documents = query.get().getDocuments();
+
+                if (documents.isEmpty()) {
+                    System.out.println("Producto no encontrado en la colección de productos.");
+                    return Boolean.FALSE;
+                }
+
+                // Obtener el documento y disponibilidad actual del producto
+                DocumentReference productDocumentRef = documents.get(0).getReference();
+                int availability = documents.get(0).getLong("Availability").intValue();
+
+                int newAmount = currentAmount;
+                int newAvailability = availability;
+
+                // Calcular nuevos valores según la acción
+                if (modificarCarritoDTO.getAction().equals("sumar")) {
+                    newAmount = currentAmount + modificarCarritoDTO.getNewamount();
+                    newAvailability = availability - modificarCarritoDTO.getNewamount();
+                } else if (modificarCarritoDTO.getAction().equals("restar")) {
+                    newAmount = currentAmount - modificarCarritoDTO.getNewamount();
+                    newAvailability = availability + modificarCarritoDTO.getNewamount();
+                } else {
+                    System.out.println("Acción no válida.");
+                    return Boolean.FALSE;
+                }
+
+                // Calcular el precio unitario y luego el nuevo price basado en el nuevo amount
+                int unitPrice = currentPrice / currentAmount;
+                int newPrice = unitPrice * newAmount;
+
+                // Crear un mapa para los datos actualizados en el carrito (solo el nuevo amount y price)
+                Map<String, Object> updatedData = new HashMap<>();
+                updatedData.put("Amount", newAmount);
+                updatedData.put("Price", newPrice);
+
+                // Crear un mapa para actualizar solo Availability en la colección de productos
+                Map<String, Object> updatedDataDish = new HashMap<>();
+                updatedDataDish.put("Availability", newAvailability);
+
+                // Actualizar el documento en el carrito
+                ApiFuture<WriteResult> writeResult = dishesCollection.document(productId).update(updatedData);
+                writeResult.get(); // Esperar hasta que se complete la actualización
+
+                // Actualizar el Availability en la colección de productos
+                ApiFuture<WriteResult> writeResultDish = productDocumentRef.update(updatedDataDish);
+                writeResultDish.get();
+
+                System.out.println("Producto actualizado exitosamente en el carrito y en la colección de productos.");
+                return Boolean.TRUE;
+            } else {
+                System.out.println("Producto no encontrado en el carrito.");
+                return Boolean.FALSE;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al modificar la cantidad del producto en el carrito: " + e.getMessage());
+            return false;
+        }
+
     }
 
 
