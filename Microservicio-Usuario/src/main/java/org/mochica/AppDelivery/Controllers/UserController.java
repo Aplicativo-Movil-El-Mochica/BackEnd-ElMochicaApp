@@ -41,14 +41,14 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         try {
             // Llamar al servicio de login para autenticar al usuario
-            String jwtToken = userService.login(loginDTO);
+            LoginResponse loginResponse = userService.login(loginDTO);
 
-            if (jwtToken.equals("Usuario no encontrado") || jwtToken.equals("Contraseña incorrecta")) {
-                return ResponseEntity.status(401).body(jwtToken);  // Error de autenticación
+            if (loginResponse == null) {
+                return ResponseEntity.status(401).body("Usuario no encontrado o contraseña incorrecta");  // Error de autenticación
             }
 
-            // Si el login es exitoso, devolver el JWT token
-            return ResponseEntity.ok(new LoginResponse(jwtToken));
+            // Si el login es exitoso, devolver el JWT token y dni en LoginResponseDTO
+            return ResponseEntity.ok(loginResponse);
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Error en la autenticación: " + e.getMessage());

@@ -10,6 +10,7 @@ import org.mochica.AppDelivery.Config.JwtTokenUtil;
 import org.mochica.AppDelivery.DTO.LoginDTO;
 import org.mochica.AppDelivery.DTO.RegisterDTO;
 import org.mochica.AppDelivery.Firebase.FBInitialize;
+import org.mochica.AppDelivery.Mappers.LoginResponse;
 import org.mochica.AppDelivery.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -100,7 +101,7 @@ public class UsuarioServiceImpl implements UserService {
     }
 
     @Override
-    public String login(LoginDTO loginDTO) {
+    public LoginResponse login(LoginDTO loginDTO) {
         try {
             // Obtener la referencia de la colección "users" en Firestore
             CollectionReference usersCollection = fbInitialize.getFirestore().collection("users");
@@ -116,6 +117,7 @@ public class UsuarioServiceImpl implements UserService {
                 // Extraer el primer documento encontrado
                 QueryDocumentSnapshot document = documents.get(0);
                 String storedPassword = document.getString("password");
+                int dniStored = document.getLong("dni").intValue();
 
                 // Comparar contraseñas usando BCrypt para mayor seguridad
                 if (passwordEncoder.matches(loginDTO.getPassword(), storedPassword)) {
@@ -123,18 +125,22 @@ public class UsuarioServiceImpl implements UserService {
 
                     // Generar el JWT usando los detalles del usuario
                     String jwt = jwtTokenUtil.generateToken(userDetails);
-                    String jwtencript = EncryptionUtil.encrypt(jwt);
-                    return jwtencript; // Devolver el token al cliente
+                    String jwtEncrypted = EncryptionUtil.encrypt(jwt);
+
+                    // Devolver el token y el dni en el objeto LoginResponseDTO
+                    return new LoginResponse(jwtEncrypted, dniStored);
                 } else {
-                    return "Contraseña incorrecta";
+                    System.out.println("Contraseña incorrecta");
+                    return null; // O puedes lanzar una excepción personalizada
                 }
             } else {
-                return "Usuario no encontrado";
+                System.out.println("Usuario no encontrado");
+                return null; // O puedes lanzar una excepción personalizada
             }
 
         } catch (ExecutionException | InterruptedException e) {
             System.out.println(e.getMessage());
-            return "Error en el login";
+            return null;
         }
     }
 

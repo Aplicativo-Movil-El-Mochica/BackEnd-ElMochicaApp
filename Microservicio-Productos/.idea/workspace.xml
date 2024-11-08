@@ -4,10 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a67c2f84-f5e1-40f2-8dc8-db902d9b2e2e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules/AppDelivery.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/DTO/SaveProductDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/Service/Impl/ProductServiceImpl.java" afterDir="false" />
+    <list default="true" id="a67c2f84-f5e1-40f2-8dc8-db902d9b2e2e" name="Changes" comment="Modificacion de las categorias">
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Controllers/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Controllers/OrderDetailsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/DTO/AddProductDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/DTO/DispositionDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/DTO/StockUpdateDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Entity/OrderDetail.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Service/Impl/OrderDetailServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Service/Impl/OrderServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Service/OrderDetail.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/AppDeliveryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/AppDeliveryApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Entity/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" afterDir="false" />
@@ -16,21 +27,8 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/Controller/ProductController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/Controller/ProductController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/DTO/ProductCategoryDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/DTO/ProductCategoryDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/DTO/ProductDisponibilityDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/DTO/ProductStockDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/DTO/ProductStockDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/Entity/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/Entity/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/Service/ProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/org/mochica/AppAdelivery/Service/ProductService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/Controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/Controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/DTO/ProductCategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/DTO/ProductCategoryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/DTO/ProductDispositionDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/DTO/ProductStockDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/DTO/ProductStockDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/Entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/Entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/Service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mochica/AppAdelivery/Service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Microservicio-Usuario/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Usuario/.idea/vcs.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +85,10 @@
     &quot;accountId&quot;: &quot;bb28d3af-23ba-444a-985a-5b897d66a841&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -95,26 +97,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build Microservicio-Productos.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.AppDeliveryApplication.executor": "Run",
-    "git-widget-placeholder": "Microservicio-Producto",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/juan0/Documents/GitHub/BackEnd-ElMochicaApp/Microservicio-Usuario",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build Microservicio-Productos.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AppDeliveryApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/juan0/Documents/GitHub/BackEnd-ElMochicaApp/Microservicio-Usuario&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="AppDelivery.main" />
@@ -155,10 +157,50 @@
       <updated>1730153159762</updated>
       <workItem from="1730153161028" duration="309000" />
       <workItem from="1730153505744" duration="5588000" />
+      <workItem from="1730513471463" duration="700000" />
+      <workItem from="1730514262755" duration="380000" />
+      <workItem from="1730515067616" duration="1630000" />
+      <workItem from="1730521373432" duration="49000" />
+      <workItem from="1730522015163" duration="12000" />
+      <workItem from="1730600855379" duration="1031000" />
+      <workItem from="1730768623508" duration="36000" />
+      <workItem from="1730779780600" duration="3735000" />
+      <workItem from="1731037383961" duration="3002000" />
+      <workItem from="1731041421755" duration="2414000" />
     </task>
+    <task id="LOCAL-00001" summary="Cambio de puerto en la aplicacion">
+      <option name="closed" value="true" />
+      <created>1730514020461</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1730514020461</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Modificacion de las categorias">
+      <option name="closed" value="true" />
+      <created>1730514516565</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1730514516565</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Modificacion de las categorias">
+      <option name="closed" value="true" />
+      <created>1730516685785</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730516685785</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Cambio de puerto en la aplicacion" />
+    <MESSAGE value="Modificacion de las categorias" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modificacion de las categorias" />
   </component>
 </project>

@@ -8,6 +8,7 @@ public class AppDeliveryApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AppDeliveryApplication.class, args);
+		System.out.println("Microservicio Pedidos en ejecucion!");
 	}
 
 }
