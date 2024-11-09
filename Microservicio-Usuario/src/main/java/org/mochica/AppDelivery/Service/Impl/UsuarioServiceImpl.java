@@ -9,6 +9,7 @@ import org.mochica.AppDelivery.Config.EncryptionUtil;
 import org.mochica.AppDelivery.Config.JwtTokenUtil;
 import org.mochica.AppDelivery.DTO.LoginDTO;
 import org.mochica.AppDelivery.DTO.RegisterDTO;
+import org.mochica.AppDelivery.DTO.SearchDniDTO;
 import org.mochica.AppDelivery.Firebase.FBInitialize;
 import org.mochica.AppDelivery.Mappers.LoginResponse;
 import org.mochica.AppDelivery.Service.UserService;
@@ -156,7 +157,7 @@ public class UsuarioServiceImpl implements UserService {
     }
 
     @Override
-    public String searchdni(Long dni) {
+    public SearchDniDTO searchdni(Long dni) {
         try {
             CollectionReference usersCollection = fbInitialize.getFirestore().collection("users");
 
@@ -168,15 +169,16 @@ public class UsuarioServiceImpl implements UserService {
             List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
             if (!documents.isEmpty()) {
                 QueryDocumentSnapshot document = documents.get(0);
+                String documentId = document.getId();
                 String name = document.getString("name");
-                return "{\"status\":\"true\",\"data\":\"" + name + "\"}";
+                return new SearchDniDTO(name, documentId);
             } else {
                 // Caso en que no se encontró un usuario con el DNI
-                return "{\"status\":\"false\",\"data\":\"Usuario no encontrado\"}";
+                return null;
             }
         } catch (ExecutionException | InterruptedException e) {
             // En caso de que haya un error de ejecución o interrupción
-            return "{\"status\":\"false\",\"data\":\"" + e.getMessage() + "\"}";
+            return null;
         }
     }
 

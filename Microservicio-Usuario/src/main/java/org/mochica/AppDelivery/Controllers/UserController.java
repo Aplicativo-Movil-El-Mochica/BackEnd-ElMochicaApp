@@ -2,6 +2,7 @@ package org.mochica.AppDelivery.Controllers;
 
 import org.mochica.AppDelivery.DTO.LoginDTO;
 import org.mochica.AppDelivery.DTO.RegisterDTO;
+import org.mochica.AppDelivery.DTO.SearchDniDTO;
 import org.mochica.AppDelivery.Mappers.LoginResponse;
 import org.mochica.AppDelivery.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,10 @@ public class UserController {
     @GetMapping("/search/{dni}")
     public ResponseEntity<?> searchdni(@PathVariable Long dni){
         try {
-            String value = userService.searchdni(dni);
+            SearchDniDTO value = userService.searchdni(dni);
+            if (value == null) {
+                return ResponseEntity.status(401).body("Usuario no encontrado");  // Error de autenticación
+            }
             return ResponseEntity.ok(value);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error en la consulta: " + e.getMessage());
