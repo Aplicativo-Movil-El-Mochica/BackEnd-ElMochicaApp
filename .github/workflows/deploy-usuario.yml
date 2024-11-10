@@ -29,7 +29,7 @@ jobs:
         echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > Microservicio-Usuario/src/main/resources/serviceaccount.json 
 
     - name: Verify Firebase credentials file
-      run: cat Microservicio-Usuario/src/main/resources/serviceAccount.json
+      run: cat Microservicio-Usuario/src/main/resources/serviceaccount.json
 
     - name: Build with Gradle
       working-directory: Microservicio-Usuario  # Cambia al directorio del microservicio
