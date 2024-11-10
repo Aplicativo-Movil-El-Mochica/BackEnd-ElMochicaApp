@@ -36,3 +36,7 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.named<Jar>("jar") {
+	archiveFileName.set("pedidos.jar")
+}
