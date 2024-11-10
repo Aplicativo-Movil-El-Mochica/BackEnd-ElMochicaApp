@@ -1,0 +1,45 @@
+name: CI/CD for Microservicio-Usuario
+
+on:
+  push:
+    branches:
+      - main  # Cambia a la rama que deseas usar para desplegar
+    paths:
+      - 'Microservicio-Usuario/**'  # Se ejecuta solo si hay cambios en esta carpeta
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Build with Maven
+      working-directory: Microservicio-Usuario  # Cambia al directorio del microservicio
+      run: mvn clean install -DskipTests
+
+    - name: Transfer files via SSH
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USER: ${{ secrets.EC2_USER }}
+        EC2_KEY: ${{ secrets.EC2_KEY }}
+      run: |
+        echo "${EC2_KEY}" > ec2-key.pem
+        chmod 400 ec2-key.pem
+        scp -i ec2-key.pem Microservicio-Usuario/target/app.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/app.jar
+
+    - name: Restart usuario.service on EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST << 'EOF'
+          sudo systemctl stop microservicio-usuario.service
+          sudo mv /home/$EC2_USER/app.jar /path/to/your/service/app.jar
+          sudo systemctl start microservicio-usuario.service
+          sudo systemctl status microservicio-usuario.service
+        EOF
