@@ -37,7 +37,7 @@ jobs:
       run: |
         echo "${EC2_KEY}" > ec2-key.pem
         chmod 400 ec2-key.pem
-        scp -i ec2-key.pem Microservicio-Pedidos/target/pedidos.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/pedidos.jar
+        scp -o StrictHostKeyChecking=no -i ec2-key.pem Microservicio-Pedidos/build/libs/pedidos.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/pedidos.jar
 
     - name: Restart pedidos.service on EC2
       run: |
