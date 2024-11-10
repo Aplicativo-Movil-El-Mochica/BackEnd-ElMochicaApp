@@ -21,9 +21,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Build with Maven
+    - name: Build with Gradle
       working-directory: Microservicio-Productos  # Cambia al directorio del microservicio
-      run: mvn clean install -DskipTests
+      run: ./gradlew clean build -x test  # Comando Gradle para construir el proyecto sin ejecutar pruebas
 
     - name: Transfer files via SSH
       env:
