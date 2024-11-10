@@ -26,7 +26,7 @@ jobs:
 
     - name: Create Firebase credentials file
       run: |
-        echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" | base64 --decode > Microservicio-Pedidos/src/main/resources/serviceaccount.json
+        echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" | base64 --decode > Microservicio-Productos/src/main/resources/serviceaccount.json
 
     - name: Verify Firebase credentials file
       run: cat Microservicio-Productos/src/main/resources/serviceaccount.json
