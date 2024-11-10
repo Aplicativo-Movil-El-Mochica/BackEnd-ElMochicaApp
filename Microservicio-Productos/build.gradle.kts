@@ -46,3 +46,7 @@ dependencyManagement {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.named<Jar>("jar") {
+	archiveFileName.set("productos.jar")
+}

@@ -37,13 +37,13 @@ jobs:
       run: |
         echo "${EC2_KEY}" > ec2-key.pem
         chmod 400 ec2-key.pem
-        scp -i ec2-key.pem Microservicio-Usuario/target/app.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/app.jar
+        scp -o StrictHostKeyChecking=no -i ec2-key.pem Microservicio-Usuario/build/libs/app.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/app.jar
 
     - name: Restart usuario.service on EC2
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USER: ${{ secrets.EC2_USER }}
+        EC2_KEY: ${{ secrets.EC2_KEY }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST << 'EOF'
-          sudo systemctl stop microservicio-usuario.service
-          sudo mv /home/$EC2_USER/app.jar /path/to/your/service/app.jar
-          sudo systemctl start microservicio-usuario.service
-          sudo systemctl status microservicio-usuario.service
-        EOF
+        ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
+        "sudo systemctl stop microservicio-usuario.service && sudo systemctl start microservicio-usuario.service && sudo systemctl status microservicio-usuario.service"
