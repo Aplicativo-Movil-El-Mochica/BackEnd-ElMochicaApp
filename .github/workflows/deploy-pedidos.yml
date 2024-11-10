@@ -42,5 +42,5 @@ jobs:
     - name: Restart pedidos.service on EC2
       run: |
         ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
-        "sudo systemctl stop pedidos.service && sudo mv /home/$EC2_USER/pedidos.jar /path/to/your/service/pedidos.jar && sudo systemctl start pedidos.service && sudo systemctl status pedidos.service"
+        "sudo systemctl stop pedidos.service && sudo mv /home/$EC2_USER/pedidos.jar /home/ubuntu/pedidos.jar && sudo systemctl start pedidos.service && sudo systemctl status pedidos.service"
     
