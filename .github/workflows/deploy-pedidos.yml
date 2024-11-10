@@ -45,4 +45,4 @@ jobs:
           EC2_KEY: ${{ secrets.EC2_KEY }}
         run: |
           ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
-          "sudo systemctl stop pedidos.service && sudo mv /home/$EC2_USER/pedidos.jar /home/$EC2_USER/pedidos.jar && sudo systemctl start pedidos.service && sudo systemctl status pedidos.service"
+          "sudo systemctl stop pedidos.service && sudo systemctl start pedidos.service && sudo systemctl status pedidos.service"
