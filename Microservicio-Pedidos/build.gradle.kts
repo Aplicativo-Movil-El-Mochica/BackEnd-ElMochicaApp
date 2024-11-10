@@ -39,7 +39,4 @@ tasks.withType<Test> {
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
 	archiveFileName.set("pedidos.jar")
-	manifest {
-		attributes["Main-Class"] = "com.mochica.AppDelivery.AppDeliveryApplication" // Cambia "YourMainClass" por la clase principal de tu aplicación
-	}
 }
