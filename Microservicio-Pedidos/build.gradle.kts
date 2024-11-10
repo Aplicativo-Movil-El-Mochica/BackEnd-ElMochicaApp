@@ -39,4 +39,7 @@ tasks.withType<Test> {
 
 tasks.named<Jar>("jar") {
 	archiveFileName.set("pedidos.jar")
+	manifest {
+		attributes["Main-Class"] = "com.mochica.AppDelivery.AppDeliveryApplication" // Cambia "YourMainClass" por la clase principal de tu aplicación
+	}
 }
