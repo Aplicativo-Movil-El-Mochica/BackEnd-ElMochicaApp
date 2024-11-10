@@ -24,6 +24,10 @@ jobs:
       - name: Grant execute permission for Gradle
         run: chmod +x Microservicio-Pedidos/gradlew  # Da permisos de ejecución a gradlew
 
+      - name: Create Firebase credentials file
+        run: |
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > src/main/resources/serviceAccount.json
+
       - name: Build with Gradle
         working-directory: Microservicio-Pedidos  # Cambia al directorio del microservicio
         run: ./gradlew clean build -x test  # Comando Gradle para construir el proyecto sin ejecutar pruebas
