@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a67c2f84-f5e1-40f2-8dc8-db902d9b2e2e" name="Changes" comment="Modificacion de las categorias">
-      <change afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/DTO/ModificarCarritoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Controllers/OrderDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Controllers/OrderDetailsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Entity/OrderDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Entity/OrderDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Service/Impl/OrderDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Service/Impl/OrderDetailServiceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Service/OrderDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/java/com/mochica/AppDelivery/Service/OrderDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Microservicio-Pedidos/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -154,7 +145,8 @@
       <workItem from="1730779780600" duration="3735000" />
       <workItem from="1731037383961" duration="3002000" />
       <workItem from="1731041421755" duration="2414000" />
-      <workItem from="1731098530886" duration="5139000" />
+      <workItem from="1731098530886" duration="5283000" />
+      <workItem from="1731180628274" duration="50000" />
     </task>
     <task id="LOCAL-00001" summary="Cambio de puerto en la aplicacion">
       <option name="closed" value="true" />
