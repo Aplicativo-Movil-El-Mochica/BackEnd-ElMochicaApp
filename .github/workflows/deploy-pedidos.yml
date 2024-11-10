@@ -3,9 +3,9 @@ name: CI/CD for Microservicio-Pedidos
 on:
   push:
     branches:
-      - main  # Cambia a la rama que deseas usar para desplegar
+      - main
     paths:
-      - 'Microservicio-Pedidos/**'  # Se ejecuta solo si hay cambios en esta carpeta
+      - 'Microservicio-Pedidos/**'
 
 jobs:
   build-and-deploy:
@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Grant execute permission for Gradle
-        run: chmod +x Microservicio-Pedidos/gradlew  # Da permisos de ejecución a gradlew
+        run: chmod +x Microservicio-Pedidos/gradlew
 
       - name: Create Firebase credentials file
         run: |
@@ -31,10 +31,17 @@ jobs:
       - name: Verify Firebase credentials file
         run: cat Microservicio-Pedidos/src/main/resources/serviceaccount.json
 
+      - name: Set API URLs as environment variables
+        env:
+          API_PRODUCT_URL: "http://${{ secrets.EC2_HOST }}:3000/api/products"
+          API_USER_URL: "http://${{ secrets.EC2_HOST }}:8080/user"
+        run: |
+          echo "API_PRODUCT_URL=$API_PRODUCT_URL" >> $GITHUB_ENV
+          echo "API_USER_URL=$API_USER_URL" >> $GITHUB_ENV
 
       - name: Build with Gradle
-        working-directory: Microservicio-Pedidos  # Cambia al directorio del microservicio
-        run: ./gradlew clean bootJar -x test  # Comando Gradle para construir el proyecto sin ejecutar pruebas
+        working-directory: Microservicio-Pedidos
+        run: ./gradlew clean bootJar -x test
 
       - name: Transfer files via SSH
         env:
