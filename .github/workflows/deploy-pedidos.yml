@@ -12,35 +12,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-    - name: Grant execute permission for Gradle
-      run: chmod +x Microservicio-Pedidos/gradlew  # Da permisos de ejecución a gradlew
+      - name: Grant execute permission for Gradle
+        run: chmod +x Microservicio-Pedidos/gradlew  # Da permisos de ejecución a gradlew
 
+      - name: Build with Gradle
+        working-directory: Microservicio-Pedidos  # Cambia al directorio del microservicio
+        run: ./gradlew clean build -x test  # Comando Gradle para construir el proyecto sin ejecutar pruebas
 
-    - name: Build with Gradle
-      working-directory: Microservicio-Pedidos  # Cambia al directorio del microservicio
-      run: ./gradlew clean build -x test  # Comando Gradle para construir el proyecto sin ejecutar pruebas
+      - name: Transfer files via SSH
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
+        run: |
+          echo "${EC2_KEY}" > ec2-key.pem
+          chmod 400 ec2-key.pem
+          scp -o StrictHostKeyChecking=no -i ec2-key.pem Microservicio-Pedidos/build/libs/pedidos.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/pedidos.jar
 
-    - name: Transfer files via SSH
-      env:
-        EC2_HOST: ${{ secrets.EC2_HOST }}
-        EC2_USER: ${{ secrets.EC2_USER }}
-        EC2_KEY: ${{ secrets.EC2_KEY }}
-      run: |
-        echo "${EC2_KEY}" > ec2-key.pem
-        chmod 400 ec2-key.pem
-        scp -o StrictHostKeyChecking=no -i ec2-key.pem Microservicio-Pedidos/build/libs/pedidos.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/pedidos.jar
-
-    - name: Restart pedidos.service on EC2
-      run: |
-        ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
-        "sudo systemctl stop pedidos.service && sudo mv /home/$EC2_USER/pedidos.jar /home/ubuntu/pedidos.jar && sudo systemctl start pedidos.service && sudo systemctl status pedidos.service"
-    
+      - name: Restart pedidos.service on EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
+          "sudo systemctl stop pedidos.service && sudo mv /home/$EC2_USER/pedidos.jar /home/$EC2_USER/pedidos.jar && sudo systemctl start pedidos.service && sudo systemctl status pedidos.service"
