@@ -40,4 +40,7 @@ tasks.withType<Test> {
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
 	archiveFileName.set("pedidos.jar")
+	from("src/main/resources") {
+		include("serviceAccount.json")
+	}
 }
