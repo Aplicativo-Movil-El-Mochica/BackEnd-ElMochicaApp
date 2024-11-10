@@ -28,9 +28,12 @@ jobs:
       run: |
         echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > Microservicio-Usuario/src/main/resources/serviceaccount.json 
 
+    - name: Verify Firebase credentials file
+      run: cat Microservicio-Usuario/src/main/resources/serviceAccount.json
+
     - name: Build with Gradle
       working-directory: Microservicio-Usuario  # Cambia al directorio del microservicio
-      run: ./gradlew clean build -x test  # Comando Gradle para construir el proyecto sin ejecutar pruebas
+      run: ./gradlew clean bootJar -x test  # Comando Gradle para construir el proyecto sin ejecutar pruebas
 
     - name: Transfer files via SSH
       env:
