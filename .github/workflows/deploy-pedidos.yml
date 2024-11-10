@@ -26,7 +26,7 @@ jobs:
 
       - name: Create Firebase credentials file
         run: |
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > Microservicio-Pedidos/src/main/resources/serviceaccount.json
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > Microservicio-Pedidos/src/main/resources/serviceaccount.json 
 
       - name: Build with Gradle
         working-directory: Microservicio-Pedidos  # Cambia al directorio del microservicio
