@@ -21,6 +21,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Grant execute permission for Gradle
+      run: chmod +x Microservicio-Usuario/gradlew  # Da permisos de ejecución a gradlew
+
+
     - name: Build with Gradle
       working-directory: Microservicio-Usuario  # Cambia al directorio del microservicio
       run: ./gradlew clean build -x test  # Comando Gradle para construir el proyecto sin ejecutar pruebas
