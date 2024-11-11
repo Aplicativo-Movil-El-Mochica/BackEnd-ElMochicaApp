@@ -14,8 +14,11 @@ public class OrderDetail {
     @PropertyName("Amount")
     private int amount;
 
-    @PropertyName("Price")
+    @PropertyName("PriceTotal")
     private int price;
+
+    @PropertyName("PriceUnit")
+    private int priceUnit;
 
     @PropertyName("Availability")
     private int availability;

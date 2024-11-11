@@ -96,7 +96,8 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
                     Map<String, Object> docData = new HashMap<>();
                     docData.put("ProductName", addProductDTO.getProductName());
                     docData.put("Amount", addProductDTO.getAmount());
-                    docData.put("Price", newprice);
+                    docData.put("PriceTotal", newprice);
+                    docData.put("PriceUnit", addProductDTO.getPrice());
                     docData.put("UserId", addProductDTO.getUserId());
                     docData.put("Availability", newAvailability);
 

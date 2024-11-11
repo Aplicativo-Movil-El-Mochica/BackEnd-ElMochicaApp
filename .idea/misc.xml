@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/Microservicio-Pedidos" />
     <file type="web" url="file://$PROJECT_DIR$/Microservicio-Productos" />
     <file type="web" url="file://$PROJECT_DIR$/Microservicio-Usuario" />
   </component>
