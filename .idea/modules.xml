@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AppDelivery.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AppDelivery.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/AppMobilMochica.iml" filepath="$PROJECT_DIR$/.idea/AppMobilMochica.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Microservicio-Usuario.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Microservicio-Usuario.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.mochica.AppDelivery.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.mochica.AppDelivery.main.iml" />
     </modules>
   </component>
 </project>

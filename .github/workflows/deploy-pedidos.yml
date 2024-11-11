@@ -31,13 +31,12 @@ jobs:
       - name: Verify Firebase credentials file
         run: cat Microservicio-Pedidos/src/main/resources/serviceaccount.json
 
-      - name: Set API URLs as environment variables
+      - name: Set EC2 environment variable on server
         env:
-          API_PRODUCT_URL: "http://${{ secrets.EC2_HOST }}:3000/api/products"
-          API_USER_URL: "http://${{ secrets.EC2_HOST }}:8080/user"
+            EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          echo "API_PRODUCT_URL=$API_PRODUCT_URL" >> $GITHUB_ENV
-          echo "API_USER_URL=$API_USER_URL" >> $GITHUB_ENV
+            ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
+            "echo 'EC2_HOST=${EC2_HOST}' | sudo tee -a /etc/environment"
 
       - name: Build with Gradle
         working-directory: Microservicio-Pedidos
