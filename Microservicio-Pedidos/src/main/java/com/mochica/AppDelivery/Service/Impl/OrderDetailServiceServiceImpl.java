@@ -190,7 +190,7 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
             if (document.exists()) {
                 // Obtener los valores actuales en el carrito
                 int currentAmount = document.getLong("Amount").intValue();
-                int currentPrice = document.getLong("Price").intValue();
+                int currentPrice = document.getLong("PriceTotal").intValue();
                 String productName = document.getString("ProductName");
 
                 // Consultar el producto por nombre en la colección de productos
@@ -228,7 +228,7 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
                 // Crear un mapa para los datos actualizados en el carrito (solo el nuevo amount y price)
                 Map<String, Object> updatedData = new HashMap<>();
                 updatedData.put("Amount", newAmount);
-                updatedData.put("Price", newPrice);
+                updatedData.put("PriceTotal", newPrice);
 
                 // Crear un mapa para actualizar solo Availability en la colección de productos
                 Map<String, Object> updatedDataDish = new HashMap<>();
