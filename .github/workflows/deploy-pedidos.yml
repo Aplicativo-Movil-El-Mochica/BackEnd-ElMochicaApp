@@ -31,12 +31,17 @@ jobs:
       - name: Verify Firebase credentials file
         run: cat Microservicio-Pedidos/src/main/resources/serviceaccount.json
 
+      - name: Set up EC2 SSH Key
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > ec2-key.pem
+          chmod 400 ec2-key.pem
+
       - name: Set EC2 environment variable on server
         env:
-            EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-            ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
-            "echo 'EC2_HOST=${EC2_HOST}' | sudo tee -a /etc/environment"
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
+          "echo 'EC2_HOST=${EC2_HOST}' | sudo tee -a /etc/environment"
 
       - name: Build with Gradle
         working-directory: Microservicio-Pedidos
