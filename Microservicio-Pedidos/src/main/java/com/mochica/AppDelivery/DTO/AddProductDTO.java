@@ -14,7 +14,7 @@ public class AddProductDTO {
     private int amount;
 
     @NotNull(message = "Precio vacio")
-    private int price;
+    private int priceUnit;
 
 
     @NotBlank(message = "UserId vacio")

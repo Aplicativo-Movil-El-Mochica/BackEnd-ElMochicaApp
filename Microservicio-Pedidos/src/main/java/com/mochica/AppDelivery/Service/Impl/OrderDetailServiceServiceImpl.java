@@ -68,7 +68,7 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
                 }
                 int newAvailability = availability - addProductDTO.getAmount();
 
-                int newprice = addProductDTO.getPrice() * addProductDTO.getAmount();
+                int newprice = addProductDTO.getPriceUnit() * addProductDTO.getAmount();
 
             if (newAvailability < 0){
                 return "Sin Stock";
@@ -97,7 +97,7 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
                     docData.put("ProductName", addProductDTO.getProductName());
                     docData.put("Amount", addProductDTO.getAmount());
                     docData.put("PriceTotal", newprice);
-                    docData.put("PriceUnit", addProductDTO.getPrice());
+                    docData.put("PriceUnit", addProductDTO.getPriceUnit());
                     docData.put("UserId", addProductDTO.getUserId());
                     docData.put("Availability", newAvailability);
 
