@@ -15,7 +15,7 @@ public class OrderDetail {
     private int amount;
 
     @PropertyName("PriceTotal")
-    private int price;
+    private int priceTotal;
 
     @PropertyName("PriceUnit")
     private int priceUnit;
