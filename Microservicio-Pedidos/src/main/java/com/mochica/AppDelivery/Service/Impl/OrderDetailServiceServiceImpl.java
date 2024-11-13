@@ -138,7 +138,7 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
 
             // Iterar sobre los documentos y sumar el precio de cada pedido
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                if (document.contains("Price")) {
+                if (document.contains("PriceTotal")) {
                     Integer price = document.getLong("PriceTotal").intValue(); // Convertir el precio a Integer
                     subtotal += price; // Sumar el precio al subtotal
                 }
