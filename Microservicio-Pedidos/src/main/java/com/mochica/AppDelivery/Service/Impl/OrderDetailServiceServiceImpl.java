@@ -267,5 +267,29 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
 
     }
 
+    @Override
+    public Boolean eliminarProductoPorId(String productId) throws ExecutionException, InterruptedException {
+        try {
+            // Referencia a la colección de Firestore
+            CollectionReference dishesCollection = fbInitialize.getFirestore().collection(collection);
+
+            // Referencia al documento según el ID proporcionado
+            DocumentReference productDoc = dishesCollection.document(productId);
+
+            // Intentar eliminar el documento
+            ApiFuture<WriteResult> writeResult = productDoc.delete();
+
+            // Obtener el resultado de la operación para verificar si fue exitosa
+            writeResult.get();
+
+            // Si no ocurre ninguna excepción, la eliminación fue exitosa
+            return true;
+        } catch (ExecutionException | InterruptedException e) {
+            // Manejar la excepción si ocurre un error durante la eliminación
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
 
 }

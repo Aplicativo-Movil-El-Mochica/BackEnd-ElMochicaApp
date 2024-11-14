@@ -1,12 +1,10 @@
 package org.mochica.AppDelivery.Service.Impl;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import org.mochica.AppDelivery.Config.EncryptionUtil;
 import org.mochica.AppDelivery.Config.JwtTokenUtil;
+import org.mochica.AppDelivery.DTO.AddressDTO;
 import org.mochica.AppDelivery.DTO.LoginDTO;
 import org.mochica.AppDelivery.DTO.RegisterDTO;
 import org.mochica.AppDelivery.DTO.SearchDniDTO;
@@ -181,5 +179,64 @@ public class UsuarioServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public Boolean saveAddress(AddressDTO addressDTO) {
+        try {
+            // Referencia a la colección de usuarios
+            CollectionReference usersCollection = fbInitialize.getFirestore().collection("users");
+
+            // Referencia al documento del usuario según el ID proporcionado
+            DocumentReference userDoc = usersCollection.document(addressDTO.getUserId());
+
+            // Crear un mapa con los campos a añadir
+            Map<String, Object> data = new HashMap<>();
+            data.put("address", addressDTO.getAddress());
+            data.put("reference", addressDTO.getReference());
+
+            // Intentar establecer los campos en el documento del usuario
+            ApiFuture<WriteResult> writeResult = userDoc.set(data, SetOptions.merge());
+
+            // Obtener el resultado de la operación para verificar si fue exitosa
+            writeResult.get();
+
+            // Si no ocurre ninguna excepción, la adición fue exitosa
+            return true;
+        } catch (ExecutionException | InterruptedException e) {
+            // Manejar la excepción si ocurre un error durante la adición
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public Boolean updateaddress(AddressDTO addressDTO) {
+        try {
+            // Referencia a la colección de usuarios
+            CollectionReference usersCollection = fbInitialize.getFirestore().collection("users");
+
+            // Referencia al documento del usuario según el ID proporcionado
+            DocumentReference userDoc = usersCollection.document(addressDTO.getUserId());
+
+            // Crear un mapa con los campos a actualizar
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("address", addressDTO.getAddress());
+            updates.put("reference", addressDTO.getReference());
+
+            // Intentar actualizar los campos en el documento del usuario
+            ApiFuture<WriteResult> writeResult = userDoc.update(updates);
+
+            // Obtener el resultado de la operación para verificar si fue exitosa
+            writeResult.get();
+
+            // Si no ocurre ninguna excepción, la actualización fue exitosa
+            return true;
+        } catch (ExecutionException | InterruptedException e) {
+            // Manejar la excepción si ocurre un error durante la actualización
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 }

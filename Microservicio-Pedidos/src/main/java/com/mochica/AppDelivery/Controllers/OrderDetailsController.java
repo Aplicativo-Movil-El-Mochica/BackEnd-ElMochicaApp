@@ -72,4 +72,20 @@ public class OrderDetailsController {
             return new ResponseEntity<>("Error adding product: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/eliminarproducto/{productid}")
+    public ResponseEntity<?> eliminarproducto(@PathVariable String productid)throws InterruptedException, ExecutionException{
+        try{
+            Boolean success = orderDetailService.eliminarProductoPorId(productid);
+
+            if (success) {
+                return new ResponseEntity<>("Product delette successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("Error adding product: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

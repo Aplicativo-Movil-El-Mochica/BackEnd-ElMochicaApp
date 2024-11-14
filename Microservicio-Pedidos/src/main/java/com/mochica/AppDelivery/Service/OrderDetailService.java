@@ -14,4 +14,5 @@ public interface OrderDetailService {
     Integer calcularSubTotal(String userId);
     List<OrderDetail> obtenerCarrito(String userId) throws ExecutionException, InterruptedException;
     Boolean modificarCarrito(ModificarCarritoDTO modificarCarritoDTO);
+    Boolean eliminarProductoPorId(String productId) throws ExecutionException, InterruptedException;
 }

@@ -1,5 +1,6 @@
 package org.mochica.AppDelivery.Controllers;
 
+import org.mochica.AppDelivery.DTO.AddressDTO;
 import org.mochica.AppDelivery.DTO.LoginDTO;
 import org.mochica.AppDelivery.DTO.RegisterDTO;
 import org.mochica.AppDelivery.DTO.SearchDniDTO;
@@ -70,4 +71,45 @@ public class UserController {
             return ResponseEntity.status(500).body("Error en la consulta: " + e.getMessage());
         }
     }
+
+    @PostMapping("/saveaddress")
+    public ResponseEntity<?> saveaddress(@RequestBody AddressDTO addressDTO) {
+        try {
+            // Llamar al servicio de login para autenticar al usuario
+            Boolean loginResponse = userService.saveAddress(addressDTO);
+
+            if (!loginResponse) {
+                return ResponseEntity.status(401).body("Usuario no encontrado");  // Error de autenticación
+            }
+
+            // Si el login es exitoso, devolver el JWT token y dni en LoginResponseDTO
+            return ResponseEntity.ok(loginResponse);
+
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(401).body("Error en la autenticación: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/updateaddress")
+    public ResponseEntity<?> updateaddress(@RequestBody AddressDTO addressDTO) {
+        try {
+            // Llamar al servicio de login para autenticar al usuario
+            Boolean loginResponse = userService.updateaddress(addressDTO);
+
+            if (!loginResponse) {
+                return ResponseEntity.status(401).body("Usuario no encontrado");  // Error de autenticación
+            }
+
+            // Si el login es exitoso, devolver el JWT token y dni en LoginResponseDTO
+            return ResponseEntity.ok(loginResponse);
+
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(401).body("Error en la autenticación: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
+        }
+    }
+
 }
