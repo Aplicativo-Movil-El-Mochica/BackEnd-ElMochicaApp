@@ -157,10 +157,10 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
         ApiFuture<QuerySnapshot> productNameFuture = dishesCollection.whereEqualTo("UserId", userId).get();
         List<QueryDocumentSnapshot> productNameDocuments = productNameFuture.get().getDocuments();
 
-        // Crear la lista donde se almacenarán los detalles de los pedidos
-        List<OrderDetail> orderDetailServices = new ArrayList<>();
+        // Crear un mapa para almacenar los detalles de los pedidos agrupados por el nombre del producto
+        Map<String, OrderDetail> orderDetailMap = new HashMap<>();
 
-        // Iterar sobre los documentos obtenidos y agregarlos a la lista
+        // Iterar sobre los documentos obtenidos y agregarlos al mapa
         for (QueryDocumentSnapshot document : productNameDocuments) {
             // Convertir el documento en un objeto OrderDetail
             OrderDetail orderDetail = document.toObject(OrderDetail.class);
@@ -168,13 +168,24 @@ public class OrderDetailServiceServiceImpl implements OrderDetailService {
             // Establecer el ID del documento en el objeto OrderDetail (si es necesario)
             orderDetail.setId(document.getId());
 
-            // Agregar el objeto OrderDetail a la lista
-            orderDetailServices.add(orderDetail);
+            // Si ya existe un producto con el mismo nombre, actualizar su cantidad y precio total
+            if (orderDetailMap.containsKey(orderDetail.getProductName())) {
+                OrderDetail existingOrderDetail = orderDetailMap.get(orderDetail.getProductName());
+                existingOrderDetail.setAmount(existingOrderDetail.getAmount() + orderDetail.getAmount());
+                existingOrderDetail.setPriceTotal(existingOrderDetail.getPriceTotal() + orderDetail.getPriceTotal());
+            } else {
+                // Si el producto no existe en el mapa, agregarlo
+                orderDetailMap.put(orderDetail.getProductName(), orderDetail);
+            }
         }
 
-        // En este punto, orderDetailServices contiene todos los documentos que cumplen la condición
+        // Crear la lista donde se almacenarán los detalles de los pedidos combinados
+        List<OrderDetail> orderDetailServices = new ArrayList<>(orderDetailMap.values());
+
+        // Devolver la lista de detalles de los pedidos combinados
         return orderDetailServices;
     }
+
 
     @Override
     public Boolean modificarCarrito(ModificarCarritoDTO modificarCarritoDTO) {
