@@ -36,13 +36,25 @@ jobs:
           echo "${{ secrets.EC2_KEY }}" > ec2-key.pem
           chmod 400 ec2-key.pem
 
-      - name: Set EC2 environment variable on server
+      - name: Set environment variables on server
         env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ${{ secrets.EC2_USER }}
+            EC2_HOST: ${{ secrets.EC2_HOST }}
+            EC2_USER: ${{ secrets.EC2_USER }}
+            MERCHANT_ID: ${{ secrets.MERCHANT_ID }}
+            TEST_KEY: ${{ secrets.TEST_KEY }}
+            PRODUCTION_KEY: ${{ secrets.PRODUCTION_KEY }}
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
+            PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
+            IZIPAY_BASE_URL: ${{ secrets.IZIPAY_BASE_URL }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
-          "echo 'EC2_HOST=${EC2_HOST}' | sudo tee -a /etc/environment"
+            ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST \
+            "echo 'EC2_HOST=${EC2_HOST}' | sudo tee -a /etc/environment && \
+             echo 'MERCHANT_ID=${MERCHANT_ID}' | sudo tee -a /etc/environment && \
+             echo 'TEST_KEY=${TEST_KEY}' | sudo tee -a /etc/environment && \
+             echo 'PRODUCTION_KEY=${PRODUCTION_KEY}' | sudo tee -a /etc/environment && \
+             echo 'SECRET_KEY=${SECRET_KEY}' | sudo tee -a /etc/environment && \
+             echo 'PUBLIC_KEY=${PUBLIC_KEY}' | sudo tee -a /etc/environment && \
+             echo 'IZIPAY_BASE_URL=${IZIPAY_BASE_URL}' | sudo tee -a /etc/environment"
 
       - name: Build with Gradle
         working-directory: Microservicio-Pedidos
