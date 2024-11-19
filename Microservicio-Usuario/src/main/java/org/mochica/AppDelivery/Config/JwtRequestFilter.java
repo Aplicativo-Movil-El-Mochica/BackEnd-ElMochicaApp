@@ -43,6 +43,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 logger.error("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
                 logger.error("JWT Token has expired");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+                response.getWriter().write("JWT Token has expired");
+                return;
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
