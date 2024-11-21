@@ -1,9 +1,7 @@
 package org.mochica.AppDelivery.Controllers;
 
-import org.mochica.AppDelivery.DTO.AddressDTO;
-import org.mochica.AppDelivery.DTO.LoginDTO;
-import org.mochica.AppDelivery.DTO.RegisterDTO;
-import org.mochica.AppDelivery.DTO.SearchDniDTO;
+import jakarta.mail.MessagingException;
+import org.mochica.AppDelivery.DTO.*;
 import org.mochica.AppDelivery.Mappers.LoginResponse;
 import org.mochica.AppDelivery.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +108,13 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
         }
+    }
+
+
+    @PostMapping("/sendVoucher")
+    public String sendHtmlEmailWithTemplate(@RequestBody EmailDTO emailDTO) {
+        userService.sendVoucher(emailDTO);
+        return "Correo con plantilla enviado con éxito!";
     }
 
 }

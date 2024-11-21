@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .header {
+
+            background: #590B07;
+            color: white;
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .content {
+            padding: 0 20px;
+            text-align: justify;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <img src="log_mochica.png" alt="" style="width: 150px; margin-left: 20px;">
+    </div>
+    <div class="content">
+        <h3 style="font-size: 26px; padding: 0; margin: 15px 0 0 0;" th:text="'Hola, ' + ${mensaje}"></h3>
+        <p style="margin: 0 0 60px 0;">Gracias por su compra en El Mochica</p>
+        <h4 style="margin: 0 0 20px 0; font-size: 20px;">Tu pedido</h4>
+        <div>
+            <h4 style="margin: 40px 0 10px 0; font-size: 16px;">Datos del pedido</h4>
+            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Tarjeta: </h5>
+                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> **** **** **** 9774</h5>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;">DNI: </h5>
+                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> 76588795</h5>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Tipo de pedido: </h5>
+                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> Delivery</h5>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Direccion: </h5>
+                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> Av. Las Cucardas 123</h5>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Fecha del pedido: </h5>
+                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> 15/11/2024</h5>
+            </div>
+
+        </div>
+        <div>
+            <h4 style="margin: 50px 0 10px 0; font-size: 16px;">Resumen del pedido</h4>
+            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Ají de gallina <b>(2)</b>: </h5>
+                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> S/.32</h5>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Papa Rellena <b>(1)</b>: </h5>
+                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> S/.10</h5>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000;">
+                <h5 style="margin: 0; flex: 1; ;">Total: </h5>
+                <h5 style="margin: 0; text-align: right;"> S/.42</h5>
+            </div>
+        </div>
+
+        <p style="margin-top: 50px; text-align: center;"><b>¡Disfruta tu experiencia!</b></p>
+    </div>
+    <div class="footer">
+        <p style="margin: 0;">Recibiste este mail porque eres nuestro usuario</p>
+        <p style="margin: 0 0 10px 0;">&copy; 2024 El Mochica. Todos los derechos reservados.</p>
+    </div>
+</div>
+</body>
+</html>

@@ -2,20 +2,30 @@ package org.mochica.AppDelivery.Service.Impl;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import lombok.val;
 import org.mochica.AppDelivery.Config.EncryptionUtil;
 import org.mochica.AppDelivery.Config.JwtTokenUtil;
-import org.mochica.AppDelivery.DTO.AddressDTO;
-import org.mochica.AppDelivery.DTO.LoginDTO;
-import org.mochica.AppDelivery.DTO.RegisterDTO;
-import org.mochica.AppDelivery.DTO.SearchDniDTO;
+import org.mochica.AppDelivery.DTO.*;
 import org.mochica.AppDelivery.Firebase.FBInitialize;
 import org.mochica.AppDelivery.Mappers.LoginResponse;
 import org.mochica.AppDelivery.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.springframework.core.io.ClassPathResource;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,10 +46,18 @@ public class UsuarioServiceImpl implements UserService {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    public UsuarioServiceImpl(TemplateEngine templateEngine, JavaMailSender mailSender) {
+        this.templateEngine = templateEngine;
+        this.mailSender = mailSender;
+    }
+
     @Override
     public List<RegisterDTO> list() {
         return List.of();
     }
+
+    private final TemplateEngine templateEngine;
+    private final JavaMailSender mailSender;
 
     @Override
     public String add(RegisterDTO registerDTO) {
@@ -235,6 +253,30 @@ public class UsuarioServiceImpl implements UserService {
             // Manejar la excepción si ocurre un error durante la actualización
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @Override
+    public void sendVoucher(EmailDTO emailDTO) {
+
+        val templateName = "Correo.html";
+
+        try {
+
+            Context context = new Context();
+            context.setVariable("mensaje", emailDTO.getNombre());
+
+            String html = templateEngine.process("Correo", context);
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(emailDTO.getDestinatario());
+            helper.setSubject("Boleta de Venta");
+            helper.setText(html, true);
+            mailSender.send(message);
+
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error sending email: " + e.getMessage(), e);
         }
     }
 
