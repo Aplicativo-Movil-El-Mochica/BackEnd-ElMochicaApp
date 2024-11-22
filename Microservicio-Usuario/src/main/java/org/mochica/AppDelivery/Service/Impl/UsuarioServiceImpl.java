@@ -259,12 +259,19 @@ public class UsuarioServiceImpl implements UserService {
     @Override
     public void sendVoucher(EmailDTO emailDTO) {
 
-        val templateName = "Correo.html";
 
         try {
 
             Context context = new Context();
             context.setVariable("mensaje", emailDTO.getNombre());
+            context.setVariable("cc", emailDTO.getCc());
+            context.setVariable("dni", emailDTO.getDni());
+            context.setVariable("tipoPedido", emailDTO.getTipoPedido());
+            context.setVariable("direccion", emailDTO.getDireccion());
+            context.setVariable("fechaPedido", emailDTO.getFechaPedido());
+            context.setVariable("resumenPedido", emailDTO.getResumenPedido());
+            context.setVariable("total", emailDTO.getTotal());
+
 
             String html = templateEngine.process("Correo", context);
 

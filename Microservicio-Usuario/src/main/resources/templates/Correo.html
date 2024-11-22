@@ -54,42 +54,38 @@
         <div>
             <h4 style="margin: 40px 0 10px 0; font-size: 16px;">Datos del pedido</h4>
             <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
-                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Tarjeta: </h5>
-                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> **** **** **** 9774</h5>
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;" th:text="'Tarjeta: ' + ${cc}"></h5>
             </div>
             <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
-                <h5 style="margin: 0; flex: 1; font-weight: lighter;">DNI: </h5>
-                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> 76588795</h5>
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;" th:text="'DNI: ' + ${dni}"></h5>
             </div>
             <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
-                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Tipo de pedido: </h5>
-                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> Delivery</h5>
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;" th:text="'Tipo de pedido: ' + ${tipoPedido}"></h5>
             </div>
             <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
-                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Direccion: </h5>
-                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> Av. Las Cucardas 123</h5>
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;" th:text="'Direccion: ' + ${direccion}"></h5>
             </div>
             <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
-                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Fecha del pedido: </h5>
-                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> 15/11/2024</h5>
+                <h5 style="margin: 0; flex: 1; font-weight: lighter;" th:text="'Fecha del pedido: ' + ${fechaPedido}"></h5>
             </div>
 
         </div>
         <div>
             <h4 style="margin: 50px 0 10px 0; font-size: 16px;">Resumen del pedido</h4>
-            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
-                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Ají de gallina <b>(2)</b>: </h5>
-                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> S/.32</h5>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
-                <h5 style="margin: 0; flex: 1; font-weight: lighter;">Papa Rellena <b>(1)</b>: </h5>
-                <h5 style="margin: 0; text-align: right; font-weight: lighter;"> S/.10</h5>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000;">
-                <h5 style="margin: 0; flex: 1; ;">Total: </h5>
-                <h5 style="margin: 0; text-align: right;"> S/.42</h5>
+            <div th:each="item : ${resumenPedido}" style="display: flex; justify-content: space-between; margin: 0 0 10px 0; color: #000000;">
+                <!-- Columna para el nombre del producto -->
+                <span style="flex: 2; text-align: left;" th:text="${item.nombre}"></span>
+                <!-- Columna para la cantidad -->
+                <span style="flex: 1; text-align: center;" th:text="'(' + ${item.cantidad} + ')'" ></span>
+                <!-- Columna para el precio -->
+                <span style="flex: 1; text-align: right;" th:text="'S/.' + ${item.precio}"></span>
             </div>
         </div>
+        <div style="display: flex; justify-content: flex-end; margin: 10px 0; color: #000;">
+            <!-- Total del pedido -->
+            <h5 style="margin: 0; font-size: 16px;" th:text="'Total: S/.' + ${total}"></h5>
+        </div>
+
 
         <p style="margin-top: 50px; text-align: center;"><b>¡Disfruta tu experiencia!</b></p>
     </div>
