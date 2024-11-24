@@ -14,6 +14,7 @@ import org.mochica.AppDelivery.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -120,46 +121,36 @@ public class UsuarioServiceImpl implements UserService {
     @Override
     public LoginResponse login(LoginDTO loginDTO) {
         try {
-            // Obtener la referencia de la colección "users" en Firestore
             CollectionReference usersCollection = fbInitialize.getFirestore().collection("users");
 
-            // Buscar el usuario por email
             ApiFuture<QuerySnapshot> future = usersCollection.whereEqualTo("email", loginDTO.getEmail()).get();
             QuerySnapshot querySnapshot = future.get();
 
-            // Obtener el resultado
             List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 
             if (!documents.isEmpty()) {
-                // Extraer el primer documento encontrado
                 QueryDocumentSnapshot document = documents.get(0);
                 String storedPassword = document.getString("password");
                 int dniStored = document.getLong("dni").intValue();
 
-                // Comparar contraseñas usando BCrypt para mayor seguridad
                 if (passwordEncoder.matches(loginDTO.getPassword(), storedPassword)) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getEmail());
 
-                    // Generar el JWT usando los detalles del usuario
                     String jwt = jwtTokenUtil.generateToken(userDetails);
                     String jwtEncrypted = EncryptionUtil.encrypt(jwt);
 
-                    // Devolver el token y el dni en el objeto LoginResponseDTO
                     return new LoginResponse(jwtEncrypted, dniStored);
                 } else {
-                    System.out.println("Contraseña incorrecta");
-                    return null; // O puedes lanzar una excepción personalizada
+                    throw new BadCredentialsException("Contraseña incorrecta");
                 }
             } else {
-                System.out.println("Usuario no encontrado");
-                return null; // O puedes lanzar una excepción personalizada
+                throw new BadCredentialsException("Usuario no registrado");
             }
-
         } catch (ExecutionException | InterruptedException e) {
-            System.out.println(e.getMessage());
-            return null;
+            throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage());
         }
     }
+
 
 
     @Override

@@ -40,19 +40,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         try {
-            // Llamar al servicio de login para autenticar al usuario
             LoginResponse loginResponse = userService.login(loginDTO);
-
-            if (loginResponse == null) {
-                return ResponseEntity.status(401).body("Usuario no encontrado o contraseña incorrecta");  // Error de autenticación
-            }
-
-            // Si el login es exitoso, devolver el JWT token y dni en LoginResponseDTO
             return ResponseEntity.ok(loginResponse);
-
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Error en la autenticación: " + e.getMessage());
-        } catch (Exception e) {
+            // Devuelve un mensaje de error de autenticación
+            return ResponseEntity.status(401).body(e.getMessage());
+        } catch (RuntimeException e) {
+            // Devuelve un mensaje de error interno
             return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
         }
     }
