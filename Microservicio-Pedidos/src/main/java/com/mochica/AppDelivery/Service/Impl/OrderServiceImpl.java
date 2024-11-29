@@ -68,6 +68,7 @@ public class OrderServiceImpl implements OrderService {
         docData.put("Total", totalAmount);
         docData.put("OrderStatus", OrderStatus.PENDIENTE);
         docData.put("Details", carrito);
+        docData.put("StatusCounter", false);
         // Agregar el documento en Firebase
         ApiFuture<WriteResult> writeResultApiFuture = ordersCollection.document().set(docData);
         writeResultApiFuture.get(); // Esperar hasta que se complete la actualización
