@@ -27,6 +27,8 @@ public class Order {
     @PropertyName("Details")
     private List<OrderDetail> details;
 
+    private Boolean statusCounter;
+
     public void updateOrderStatus(OrderStatus status) {
         this.orderStatus = status;
     }
