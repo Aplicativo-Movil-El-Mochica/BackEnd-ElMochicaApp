@@ -69,7 +69,6 @@ public class OrderServiceImpl implements OrderService {
         docData.put("Total", totalAmount);
         docData.put("OrderStatus", OrderStatus.PENDIENTE);
         docData.put("Details", carrito);
-        docData.put("StatusCounter", false);
         // Agregar el documento en Firebase
         ApiFuture<WriteResult> writeResultApiFuture = ordersCollection.document().set(docData);
         writeResultApiFuture.get(); // Esperar hasta que se complete la actualización
@@ -85,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
         Map<String, Object> body = new HashMap<>();
         body.put("amount", (int) (totalAmount * 100)); // Izipay requiere el monto en centavos
         body.put("currency", initiatePaymentDTO.getCurrency()); // Cambia a la moneda deseada
-        body.put("paymentMode", "CPT");
+        body.put("formAction", "PAYMENT");
         Map<String, Object> customer = new HashMap<>();
         customer.put("email", email);
         body.put("customer", customer);
