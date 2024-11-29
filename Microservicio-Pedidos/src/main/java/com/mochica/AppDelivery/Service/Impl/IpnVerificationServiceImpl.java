@@ -1,9 +1,11 @@
 package com.mochica.AppDelivery.Service.Impl;
 
 import com.mochica.AppDelivery.Service.IpnVerificationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Map;
@@ -15,9 +17,14 @@ public class IpnVerificationServiceImpl implements IpnVerificationService {
     @Value("${izipay.secret-key}")  // Define esta clave en application.properties o application.yml
     private String secretKey;
 
+    private static final String JSON_FILE_PATH = "payload_data.json";  // Ruta del archivo donde se guardará el JSON
+
     @Override
     public boolean verifySignature(Map<String, String> payload) {
         try {
+            // Guardar el payload en un archivo JSON
+            savePayloadToJson(payload);
+
             // Ordenar los parámetros alfabéticamente
             TreeMap<String, String> sortedParams = new TreeMap<>(payload);
 
@@ -50,6 +57,18 @@ public class IpnVerificationServiceImpl implements IpnVerificationService {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    private void savePayloadToJson(Map<String, String> payload) {
+        try {
+            // Crear un ObjectMapper de Jackson para convertir el mapa a JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            
+            // Guardar el mapa como un archivo JSON
+            objectMapper.writeValue(new File(JSON_FILE_PATH), payload);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
         Map<String, Object> body = new HashMap<>();
         body.put("amount", (int) (totalAmount * 100)); // Izipay requiere el monto en centavos
         body.put("currency", initiatePaymentDTO.getCurrency()); // Cambia a la moneda deseada
-        body.put("formAction", "PAYMENT");
+        body.put("paymentMode", "CPT");
         Map<String, Object> customer = new HashMap<>();
         customer.put("email", email);
         body.put("customer", customer);
