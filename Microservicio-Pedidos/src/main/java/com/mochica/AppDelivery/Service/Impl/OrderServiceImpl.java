@@ -213,7 +213,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Boolean eliminarCarrito(String userId) {
-        CollectionReference carritosCollection = fbInitialize.getFirestore().collection(collection);
+        CollectionReference carritosCollection = fbInitialize.getFirestore().collection("orderdetails");
 
         try {
             // Filtrar los documentos por userId
