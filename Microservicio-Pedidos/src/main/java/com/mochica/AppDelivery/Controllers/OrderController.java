@@ -62,7 +62,7 @@ public class OrderController {
     }
 
     @PutMapping("/actualizarStatus/{orderId}")
-    public ResponseEntity<?> actualizarStatus(@PathVariable String orderId,@RequestBody OrderStatus newStatus) throws InterruptedException, ExecutionException{
+    public ResponseEntity<?> actualizarStatus(@PathVariable String orderId,@RequestBody String newStatus) throws InterruptedException, ExecutionException{
         try{
             Boolean success = orderService.actualizarStatus(orderId, newStatus);
             if (success){

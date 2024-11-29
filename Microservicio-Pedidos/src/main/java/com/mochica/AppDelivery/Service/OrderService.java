@@ -13,5 +13,5 @@ public interface OrderService {
     FormtokenResponseDTO generateFormToken(InitiatePaymentDTO initiatePaymentDTO) throws Exception;
     List<Order> obtenerOrder(String userId) throws ExecutionException, InterruptedException;
     Boolean actualizarStatusCounter(String orderId);
-    Boolean actualizarStatus(String orderId, OrderStatus newStatus);
+    Boolean actualizarStatus(String orderId, String newStatus);
 }

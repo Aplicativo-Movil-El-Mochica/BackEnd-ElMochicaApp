@@ -180,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Boolean actualizarStatus(String orderId, OrderStatus newStatus) {
+    public Boolean actualizarStatus(String orderId, String newStatus) {
         // Obtén la referencia a la colección de pedidos
         CollectionReference ordersCollection = fbInitialize.getFirestore().collection(collection);
 
@@ -194,10 +194,10 @@ public class OrderServiceImpl implements OrderService {
 
             if (documentSnapshot.exists()) {
                 // Si el documento existe, actualizamos el campo 'orderStatus' con el valor del enum
-                orderDocRef.update("orderStatus", newStatus.name()).get();  // Usamos .name() para obtener el nombre del enum como String
+                orderDocRef.update("orderStatus", newStatus).get();  // Usamos .name() para obtener el nombre del enum como String
 
                 // Confirmamos la actualización
-                System.out.println("OrderStatus actualizado a: " + newStatus.name());
+                System.out.println("OrderStatus actualizado a: " + newStatus);
                 return true;
             } else {
                 // Si el documento no existe
