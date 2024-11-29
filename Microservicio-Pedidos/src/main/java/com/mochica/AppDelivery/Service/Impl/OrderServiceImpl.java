@@ -217,7 +217,7 @@ public class OrderServiceImpl implements OrderService {
 
         try {
             // Filtrar los documentos por userId
-            Query query = carritosCollection.whereEqualTo("userId", userId);
+            Query query = carritosCollection.whereEqualTo("UserId", userId);
             ApiFuture<QuerySnapshot> querySnapshotFuture = query.get();
 
             // Esperamos a obtener los documentos
