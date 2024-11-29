@@ -2,6 +2,7 @@ package com.mochica.AppDelivery.Controllers;
 
 import com.mochica.AppDelivery.DTO.FormtokenResponseDTO;
 import com.mochica.AppDelivery.DTO.InitiatePaymentDTO;
+import com.mochica.AppDelivery.DTO.UpdateStatusDTO;
 import com.mochica.AppDelivery.Entity.Order;
 import com.mochica.AppDelivery.Entity.OrderDetail;
 import com.mochica.AppDelivery.Entity.OrderStatus;
@@ -62,9 +63,9 @@ public class OrderController {
     }
 
     @PutMapping("/actualizarStatus/{orderId}")
-    public ResponseEntity<?> actualizarStatus(@PathVariable String orderId,@RequestBody String newStatus) throws InterruptedException, ExecutionException{
+    public ResponseEntity<?> actualizarStatus(@PathVariable String orderId,@RequestBody UpdateStatusDTO updateStatusDTO) throws InterruptedException, ExecutionException{
         try{
-            Boolean success = orderService.actualizarStatus(orderId, newStatus);
+            Boolean success = orderService.actualizarStatus(orderId, updateStatusDTO);
             if (success){
                 return new ResponseEntity<>(success, HttpStatus.OK);
             }else {

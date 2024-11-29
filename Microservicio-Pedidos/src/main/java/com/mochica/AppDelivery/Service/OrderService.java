@@ -2,6 +2,7 @@ package com.mochica.AppDelivery.Service;
 
 import com.mochica.AppDelivery.DTO.FormtokenResponseDTO;
 import com.mochica.AppDelivery.DTO.InitiatePaymentDTO;
+import com.mochica.AppDelivery.DTO.UpdateStatusDTO;
 import com.mochica.AppDelivery.Entity.Order;
 import com.mochica.AppDelivery.Entity.OrderStatus;
 
@@ -13,5 +14,5 @@ public interface OrderService {
     FormtokenResponseDTO generateFormToken(InitiatePaymentDTO initiatePaymentDTO) throws Exception;
     List<Order> obtenerOrder(String userId) throws ExecutionException, InterruptedException;
     Boolean actualizarStatusCounter(String orderId);
-    Boolean actualizarStatus(String orderId, String newStatus);
+    Boolean actualizarStatus(String orderId, UpdateStatusDTO updateStatusDTO);
 }

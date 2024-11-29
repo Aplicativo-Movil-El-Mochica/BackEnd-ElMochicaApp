@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.mochica.AppDelivery.DTO.FormtokenResponseDTO;
 import com.mochica.AppDelivery.DTO.InitiatePaymentDTO;
+import com.mochica.AppDelivery.DTO.UpdateStatusDTO;
 import com.mochica.AppDelivery.Entity.Order;
 import com.mochica.AppDelivery.Entity.OrderDetail;
 import com.mochica.AppDelivery.Entity.OrderStatus;
@@ -180,7 +181,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Boolean actualizarStatus(String orderId, String newStatus) {
+    public Boolean actualizarStatus(String orderId, UpdateStatusDTO updateStatusDTO) {
         // Obtén la referencia a la colección de pedidos
         CollectionReference ordersCollection = fbInitialize.getFirestore().collection(collection);
 
@@ -194,10 +195,10 @@ public class OrderServiceImpl implements OrderService {
 
             if (documentSnapshot.exists()) {
                 // Si el documento existe, actualizamos el campo 'orderStatus' con el valor del enum
-                orderDocRef.update("orderStatus", newStatus).get();  // Usamos .name() para obtener el nombre del enum como String
+                orderDocRef.update("OrderStatus", updateStatusDTO.getNewStatus()).get();  // Usamos .name() para obtener el nombre del enum como String
 
                 // Confirmamos la actualización
-                System.out.println("OrderStatus actualizado a: " + newStatus);
+                System.out.println("OrderStatus actualizado a: " + updateStatusDTO.getNewStatus());
                 return true;
             } else {
                 // Si el documento no existe
