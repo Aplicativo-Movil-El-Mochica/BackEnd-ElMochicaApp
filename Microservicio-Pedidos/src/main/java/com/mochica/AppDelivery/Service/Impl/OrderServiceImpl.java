@@ -142,4 +142,73 @@ public class OrderServiceImpl implements OrderService {
         // Devolver la lista de pedidos
         return orderList;
     }
+
+    @Override
+    public Boolean actualizarStatusCounter(String orderId) {
+        CollectionReference ordersCollection = fbInitialize.getFirestore().collection("orders");
+
+        try {
+            // Obtener el documento específico usando el orderId
+            DocumentReference orderDocRef = ordersCollection.document(orderId);
+
+            // Obtener el documento
+            ApiFuture<DocumentSnapshot> documentSnapshotFuture = orderDocRef.get();
+            DocumentSnapshot documentSnapshot = documentSnapshotFuture.get();
+
+            if (documentSnapshot.exists()) {
+                // Si el documento existe, obtener el valor actual de 'statusCounter'
+                Boolean currentStatusCounter = documentSnapshot.getBoolean("statusCounter");
+
+                if (currentStatusCounter != null && !currentStatusCounter) {
+                    // Si 'statusCounter' es false, actualizamos el valor
+                    orderDocRef.update("statusCounter", true).get(); // Actualizamos el campo 'statusCounter' a 'true'
+
+                    // Si necesitas hacer algo con el documento o sus detalles, puedes hacerlo aquí
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                // Si el documento no existe
+                System.out.println("No se encontró el documento con el ID: " + orderId);
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean actualizarStatus(String orderId, OrderStatus newStatus) {
+        // Obtén la referencia a la colección de pedidos
+        CollectionReference ordersCollection = fbInitialize.getFirestore().collection("orders");
+
+        try {
+            // Obtener el documento específico usando el orderId
+            DocumentReference orderDocRef = ordersCollection.document(orderId);
+
+            // Obtener el documento
+            ApiFuture<DocumentSnapshot> documentSnapshotFuture = orderDocRef.get();
+            DocumentSnapshot documentSnapshot = documentSnapshotFuture.get();
+
+            if (documentSnapshot.exists()) {
+                // Si el documento existe, actualizamos el campo 'orderStatus' con el valor del enum
+                orderDocRef.update("orderStatus", newStatus.name()).get();  // Usamos .name() para obtener el nombre del enum como String
+
+                // Confirmamos la actualización
+                System.out.println("OrderStatus actualizado a: " + newStatus.name());
+                return true;
+            } else {
+                // Si el documento no existe
+                System.out.println("No se encontró el documento con el ID: " + orderId);
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }

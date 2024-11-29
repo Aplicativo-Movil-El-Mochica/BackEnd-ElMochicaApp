@@ -4,6 +4,7 @@ import com.mochica.AppDelivery.DTO.FormtokenResponseDTO;
 import com.mochica.AppDelivery.DTO.InitiatePaymentDTO;
 import com.mochica.AppDelivery.Entity.Order;
 import com.mochica.AppDelivery.Entity.OrderDetail;
+import com.mochica.AppDelivery.Entity.OrderStatus;
 import com.mochica.AppDelivery.Service.Impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,36 @@ public class OrderController {
             List<Order> success = orderService.obtenerOrder(userid);
 
             return new ResponseEntity<>(success, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error adding product: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/actualizarCounter/{orderId}")
+    public ResponseEntity<?> actualizarCounter(@PathVariable String orderId) throws InterruptedException, ExecutionException{
+        try{
+            Boolean success = orderService.actualizarStatusCounter(orderId);
+            if (success){
+                return new ResponseEntity<>(success, HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
+            }
+
+        }catch (Exception e){
+            return new ResponseEntity<>("Error adding product: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/actualizarStatus/{orderId}")
+    public ResponseEntity<?> actualizarStatus(@PathVariable String orderId,@RequestBody OrderStatus newStatus) throws InterruptedException, ExecutionException{
+        try{
+            Boolean success = orderService.actualizarStatus(orderId, newStatus);
+            if (success){
+                return new ResponseEntity<>(success, HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
+            }
+
         }catch (Exception e){
             return new ResponseEntity<>("Error adding product: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
