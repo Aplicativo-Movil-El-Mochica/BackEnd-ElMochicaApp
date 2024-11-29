@@ -255,7 +255,6 @@ public class UsuarioServiceImpl implements UserService {
 
             Context context = new Context();
             context.setVariable("mensaje", emailDTO.getNombre());
-            context.setVariable("cc", emailDTO.getCc());
             context.setVariable("dni", emailDTO.getDni());
             context.setVariable("tipoPedido", emailDTO.getTipoPedido());
             context.setVariable("direccion", emailDTO.getDireccion());
