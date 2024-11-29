@@ -145,7 +145,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Boolean actualizarStatusCounter(String orderId) {
-        CollectionReference ordersCollection = fbInitialize.getFirestore().collection("orders");
+        CollectionReference ordersCollection = fbInitialize.getFirestore().collection(collection);
 
         try {
             // Obtener el documento específico usando el orderId
@@ -182,7 +182,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean actualizarStatus(String orderId, OrderStatus newStatus) {
         // Obtén la referencia a la colección de pedidos
-        CollectionReference ordersCollection = fbInitialize.getFirestore().collection("orders");
+        CollectionReference ordersCollection = fbInitialize.getFirestore().collection(collection);
 
         try {
             // Obtener el documento específico usando el orderId
