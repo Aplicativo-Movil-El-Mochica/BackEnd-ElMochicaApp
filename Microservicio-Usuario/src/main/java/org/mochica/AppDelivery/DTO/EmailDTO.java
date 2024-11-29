@@ -9,7 +9,6 @@ import java.util.List;
 public class EmailDTO {
     String destinatario;
     String nombre;
-    String cc;
     String tipocc;
     String dni;
     String tipoPedido;
