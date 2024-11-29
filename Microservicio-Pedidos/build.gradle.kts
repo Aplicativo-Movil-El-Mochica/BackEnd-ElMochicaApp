@@ -29,10 +29,12 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-logging")
 	implementation("com.google.firebase:firebase-admin:9.4.1")
 	implementation("org.apache.httpcomponents:httpclient")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
 }
 
 tasks.withType<Test> {
