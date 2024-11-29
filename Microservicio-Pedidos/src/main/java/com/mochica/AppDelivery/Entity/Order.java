@@ -1,5 +1,6 @@
 package com.mochica.AppDelivery.Entity;
 
+import com.google.cloud.firestore.annotation.PropertyName;
 import lombok.Data;
 
 import java.sql.Time;
@@ -10,11 +11,20 @@ import java.util.List;
 public class Order {
 
     private String id;
+
+    @PropertyName("UserId")
     private String userId;
+
+    @PropertyName("OrderDate")
     private Date orderDate;
-    private Time timeOrder;
+
+    @PropertyName("Total")
     private Double total;
+
+    @PropertyName("OrderStatus")
     private OrderStatus orderStatus;
+
+    @PropertyName("Details")
     private List<OrderDetail> details;
 
     public void updateOrderStatus(OrderStatus status) {
