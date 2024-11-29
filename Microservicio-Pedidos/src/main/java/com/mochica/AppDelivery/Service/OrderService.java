@@ -15,4 +15,5 @@ public interface OrderService {
     List<Order> obtenerOrder(String userId) throws ExecutionException, InterruptedException;
     Boolean actualizarStatusCounter(String orderId);
     Boolean actualizarStatus(String orderId, UpdateStatusDTO updateStatusDTO);
+    Boolean eliminarCarrito(String userId);
 }

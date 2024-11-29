@@ -77,4 +77,19 @@ public class OrderController {
         }
     }
 
+    @DeleteMapping("/eliminarCarrito/{userId}")
+    public ResponseEntity<?> eliminarCarrito(@PathVariable String userId) throws InterruptedException, ExecutionException{
+        try{
+            Boolean success = orderService.eliminarCarrito(userId);
+            if (success){
+                return new ResponseEntity<>(success, HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
+            }
+
+        }catch (Exception e){
+            return new ResponseEntity<>("Error adding product: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

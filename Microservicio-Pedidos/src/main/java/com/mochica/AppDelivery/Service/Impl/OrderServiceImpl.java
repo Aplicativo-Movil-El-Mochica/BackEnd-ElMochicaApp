@@ -211,5 +211,36 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public Boolean eliminarCarrito(String userId) {
+        CollectionReference carritosCollection = fbInitialize.getFirestore().collection(collection);
 
+        try {
+            // Filtrar los documentos por userId
+            Query query = carritosCollection.whereEqualTo("userId", userId);
+            ApiFuture<QuerySnapshot> querySnapshotFuture = query.get();
+
+            // Esperamos a obtener los documentos
+            QuerySnapshot querySnapshot = querySnapshotFuture.get();
+
+            // Si encontramos documentos que coinciden con el userId
+            if (!querySnapshot.isEmpty()) {
+                // Eliminar todos los documentos encontrados
+                for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+                    DocumentReference documentRef = carritosCollection.document(documentSnapshot.getId());
+                    ApiFuture<WriteResult> deleteFuture = documentRef.delete(); // Cambiar a ApiFuture<WriteResult>
+                    deleteFuture.get();  // Esperamos a que se elimine el documento
+                    System.out.println("Carrito con ID: " + documentSnapshot.getId() + " eliminado.");
+                }
+                return true;  // Indicamos que la eliminación fue exitosa
+            } else {
+                // No se encontraron documentos con el userId proporcionado
+                System.out.println("No se encontraron carritos para el userId: " + userId);
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;  // En caso de error
+        }
+    }
 }
