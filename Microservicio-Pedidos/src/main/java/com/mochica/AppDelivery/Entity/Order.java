@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 public class Order {
 
+    private String id;
     private String userId;
     private Date orderDate;
     private Time timeOrder;

@@ -2,16 +2,16 @@ package com.mochica.AppDelivery.Controllers;
 
 import com.mochica.AppDelivery.DTO.FormtokenResponseDTO;
 import com.mochica.AppDelivery.DTO.InitiatePaymentDTO;
+import com.mochica.AppDelivery.Entity.Order;
+import com.mochica.AppDelivery.Entity.OrderDetail;
 import com.mochica.AppDelivery.Service.Impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -33,4 +33,16 @@ public class OrderController {
             return new ResponseEntity<>("Error generate formtoken: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/obtenerOrder/{userid}")
+    public ResponseEntity<?> obtenerCarrito(@PathVariable String userid) throws InterruptedException, ExecutionException{
+        try{
+            List<Order> success = orderService.obtenerOrder(userid);
+
+            return new ResponseEntity<>(success, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error adding product: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

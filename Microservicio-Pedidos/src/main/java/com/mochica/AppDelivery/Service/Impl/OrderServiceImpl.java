@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.mochica.AppDelivery.DTO.FormtokenResponseDTO;
 import com.mochica.AppDelivery.DTO.InitiatePaymentDTO;
+import com.mochica.AppDelivery.Entity.Order;
 import com.mochica.AppDelivery.Entity.OrderDetail;
 import com.mochica.AppDelivery.Entity.OrderStatus;
 import com.mochica.AppDelivery.Firebase.FBInitialize;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -112,5 +114,31 @@ public class OrderServiceImpl implements OrderService {
         }
 
 
+    }
+
+
+    @Override
+    public List<Order> obtenerOrder(String userId) throws ExecutionException, InterruptedException {
+        // Obtener la colección de pedidos desde Firestore
+        CollectionReference ordersCollection = fbInitialize.getFirestore().collection(collection);
+
+        // Hacer una consulta para obtener todos los pedidos relacionados con el UserId
+        ApiFuture<QuerySnapshot> querySnapshotFuture = ordersCollection.whereEqualTo("UserId", userId).get();
+        List<QueryDocumentSnapshot> orderDocuments = querySnapshotFuture.get().getDocuments();
+
+        // Crear una lista para almacenar los pedidos
+        List<Order> orderList = new ArrayList<>();
+
+        // Iterar sobre los documentos obtenidos
+        for (QueryDocumentSnapshot document : orderDocuments) {
+            Order order = document.toObject(Order.class);
+
+            order.setId(document.getId());
+
+            orderList.add(order);
+        }
+
+        // Devolver la lista de pedidos
+        return orderList;
     }
 }
